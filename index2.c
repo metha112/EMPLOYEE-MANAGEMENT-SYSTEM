@@ -1,7 +1,6 @@
 #include<stdio.h>
-int main(){
-    printf("helooqw");
-
+int nain(){
+  printf("hello");
     return 0;
 
 }
