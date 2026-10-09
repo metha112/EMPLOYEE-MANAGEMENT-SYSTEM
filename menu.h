@@ -13,4 +13,11 @@ void printMainHeader();
 // Main menu interface eka - box nathuwa center version eka
 void showMainInterface();
 
+// Aluth Word file eke thiyena main menu eka
+void showMainMenu();
+
+// 1 click karama enna ona Employee Management eka
+void showEmployeeMenu();
+
+
 #endif
