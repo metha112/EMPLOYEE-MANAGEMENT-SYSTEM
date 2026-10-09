@@ -1,7 +1,7 @@
-#include<stdio.h>
-int main(){
-printf("Hello world");
-printf("Hello world");
+#include <stdio.h>
+ int main(){
+    printf("ai2");
+    printf("why");
 
-return 0;
-}
+    return 0;
+ }
