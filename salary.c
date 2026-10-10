@@ -5,15 +5,15 @@ int main(){
     return 0;
 }
 void salary(){
-    FILE *fp;
+    FILE *file;
     int empid,schempid;
     int x,y=0;
     float salary,allowance,deduction,netsalary;
     
     
 
-    fp=fopen("employee.txt","r");
-    if (fp==NULL)
+    file=fopen("employee.txt","r");
+    if (file==NULL)
     {
         printf("file is not in management system\n");
 
@@ -24,7 +24,7 @@ void salary(){
         printf("enter the employee id : ");
         scanf("%d",&schempid);
 
-        while (fscanf(fp, "%d %lf",&empid,&salary)==3)
+        while (fscanf(file, "%d %lf",&empid,&salary)==3)
         {
             if (empid==schempid)
             {
@@ -51,7 +51,7 @@ void salary(){
         {
             printf("employee is not found\n");
         }
-        fclose(fp);
+        fclose(file);
     
         
     }
