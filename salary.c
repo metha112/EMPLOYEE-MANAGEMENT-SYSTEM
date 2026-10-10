@@ -6,9 +6,10 @@ int main(){
 }
 void salary(){
     FILE *file;
-    int empid,schempid;
-    int x,y=0;
+    int empid,schempid,ph;
+    int x=0,y=0;
     float salary,allowance,deduction,netsalary;
+    char name[50],dep[50],position[50],email[100];
     
     
 
@@ -17,31 +18,31 @@ void salary(){
     {
         printf("file is not in management system\n");
 
-        y==1;
+        y=1;
     }
     if (y==0)
     {
         printf("enter the employee id : ");
         scanf("%d",&schempid);
 
-        while (fscanf(file, "%d %lf",&empid,&salary)==3)
+        while (fscanf(file, "%d %49s %49s %49s %99s %d %f",&empid,name,dep,position,email,ph,&salary)==7)
         {
             if (empid==schempid)
             {
-                printf("Employee id :%d",empid);
-                printf("Basic salary :%f",salary);
+                printf("Employee id :%d\n",empid);
+                printf("Basic salary :%f\n",salary);
                 printf("Enter the allowance : ");
-                scanf("%d",&allowance);
+                scanf("%f",&allowance);
 
                 printf("Enter the deduction : ");
-                scanf("%d",&deduction);
+                scanf("%f",&deduction);
 
                 netsalary=(salary+allowance)-deduction;
 
                 printf("\n");
 
                 printf("---------------------------------\n");
-                printf("Net salary = %f",netsalary);
+                printf("Net salary = %.2f\n",netsalary);
 
                 x=1;
                 break;
