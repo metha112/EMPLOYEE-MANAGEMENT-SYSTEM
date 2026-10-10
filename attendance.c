@@ -26,7 +26,18 @@ void showAttendanceMenu(){
         printf("Enter Choice : ");
         scanf("%d",&choice); getchar();
         switch(choice){
+            case 1: markAttendance(); break;
+            case 2: viewAttendance(); break;
+            case 3: searchAttendance(); break;
+            case 4: monthlyReport(); break;
             case 0: return;
+            default: printf("Invalid!"); getchar();
         }
     }while(1);
 }
+
+void markAttendance(){clearScreen(); printf("Mark Attendance\nPress Enter..."); getchar();}
+void viewAttendance(){ clearScreen(); printf("View Attendance\nPress Enter..."); getchar(); }
+void searchAttendance(){ clearScreen(); printf("Search Attendance\nPress Enter..."); getchar(); }
+void monthlyReport(){ clearScreen(); printf("Monthly Report\nPress Enter..."); getchar(); }
+
