@@ -25,7 +25,7 @@ void salary(){
         printf("enter the employee id : ");
         scanf("%d",&schempid);
 
-        while (fscanf(file, "%d %49s %49s %49s %99s %d %f",&empid,name,dep,position,email,ph,&salary)==7)
+        while (fscanf(file, "%d %49s %49s %49s %99s %d %f",&empid,name,dep,position,email,&ph,&salary)==7)
         {
             if (empid==schempid)
             {
