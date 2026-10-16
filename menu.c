@@ -16,6 +16,8 @@ void clearScreen(){
 #endif
 }
 
+/*main manu*/
+
 void showMainMenu(){
     int choice;
     do{
@@ -55,7 +57,8 @@ void showMainMenu(){
                 getchar();
                 break;
             case 0:
-                exit(0);
+                login();
+                break;
             default:
                 printf("\nInvalid!\n");
                 printf("Press Enter...");
@@ -63,6 +66,8 @@ void showMainMenu(){
         }
     }while(1);
 }
+
+/*Employee management menu*/
 
 void showEmployeeMenu(){
     int choice;
@@ -127,6 +132,8 @@ void showDepartmentMenuForAttendance(){
     showAttendanceMenu();
 }
 
+/*attendance menu*/
+
 
 int selectedDept=0;
 
@@ -166,6 +173,7 @@ void viewAttendance(){ clearScreen(); printf("View Attendance\nPress Enter...");
 void searchAttendance(){ clearScreen(); printf("Search Attendance\nPress Enter..."); getchar(); }
 void monthlyReport(){ clearScreen(); printf("Monthly Report\nPress Enter..."); getchar(); }
 
+/*leave management*/
 
 void showLeave(){
     int choice;
@@ -200,14 +208,14 @@ void viewLeave (){ clearScreen(); printf("View Leave\nPress Enter..."); getchar(
 void approveLeave (){ clearScreen(); printf("Approve Leave\nPress Enter..."); getchar(); }
 void rejectLeave (){ clearScreen(); printf("Reject Leave\nPress Enter..."); getchar(); }
 
-
+/*salary Management*/
 
 void showSalary(){
     int choice;
     do{
         clearScreen();
        printf("===============================================\n\n");
-        printf(" SALARY ANAGEMENT\n\n");
+        printf(" SALARY MANAGEMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Basic Salary  \n\n");
         printf("[2] Allowances  \n\n");
