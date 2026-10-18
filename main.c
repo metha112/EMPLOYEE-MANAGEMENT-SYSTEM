@@ -1,14 +1,45 @@
 #include "menu.h"
-#include <conio.h>
 #include <string.h>
 #include "employee.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Employee file path: Windows wala full path eka, Ubuntu wala relative path eka */
+/*
+ * conio.h use karanne na.
+ * Key ekak enter nathuwa, screen eke pennanne nathuwa read karanna
+ * Windows wala Windows API, Ubuntu wala termios use karanawa.
+ */
 #ifdef _WIN32
+    #include <windows.h>
+
+    static int readKey(void){
+        HANDLE h = GetStdHandle(STD_INPUT_HANDLE);
+        DWORD oldMode, n;
+        char c = 0;
+        GetConsoleMode(h, &oldMode);
+        SetConsoleMode(h, oldMode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+        ReadConsoleA(h, &c, 1, &n, NULL);
+        SetConsoleMode(h, oldMode);
+        return (unsigned char)c;
+    }
+
     #define EMPLOYEE_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
 #else
+    #include <termios.h>
+    #include <unistd.h>
+
+    static int readKey(void){
+        struct termios oldt, newt;
+        int ch;
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+        ch = getchar();
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        return ch;
+    }
+
     #define EMPLOYEE_FILE "File_Manegement/employee.txt"
 #endif
 
@@ -99,7 +130,7 @@ void userPassword(){
     char username[20];
     char password[20];
     int i;
-    int ch;                              /* char wenuwata int (getch eka int return karanawa) */
+    int ch;
 
     while(1){
         clearScreen();
@@ -117,10 +148,10 @@ void userPassword(){
         getchar();                       /* scanf eken ithuru '\n' eka ayin karanna */
 
         printf("Password: ");
-        fflush(stdout);                  /* Linux wala prompt eka dang pennanna */
+        fflush(stdout);
         i = 0;
         while(1){
-            ch = getch();
+            ch = readKey();
             if(ch == 13 || ch == 10) break;            /* Enter: Windows 13, Linux 10 */
             if(ch == 8 || ch == 127){                  /* Backspace: Windows 8, Linux 127 */
                 if(i > 0){
@@ -141,9 +172,9 @@ void userPassword(){
             return;                     /* back to login menu after logout */
         } else {
             printf("\n\nWrong Username or password\n");
-            printf("Press any key to try again...");
+            printf("Press Enter to try again...");
             fflush(stdout);
-            getch();
+            getchar();
         }
     }
 }
