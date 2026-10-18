@@ -4,11 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
- * conio.h use karanne na.
- * Key ekak enter nathuwa, screen eke pennanne nathuwa read karanna
- * Windows wala Windows API, Ubuntu wala termios use karanawa.
- */
 #ifdef _WIN32
     #include <windows.h>
 
