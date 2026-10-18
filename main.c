@@ -64,7 +64,7 @@ void login(){
         printf("----------------------------------------------------------------\n");
         printf("Enter Choice : ");
         if(scanf("%d",&choice) != 1){
-            choice = -1;                 /* letter ekak gahuwoth infinite loop wenna epa */
+            choice = -1;                 
             scanf("%*[^\n]");
         }
         getchar();
@@ -90,14 +90,14 @@ void login(){
 int checkLogin(const char *username, const char *password){
     FILE *fp = fopen(EMPLOYEE_FILE, "r");
     if(fp == NULL){
-        return 0;               /* file not found */
+        return 0;              
     }
 
     char line[512];
     int found = 0;
 
     while(fgets(line, sizeof(line), fp)){
-        line[strcspn(line, "\r\n")] = '\0';   /* remove newline */
+        line[strcspn(line, "\r\n")] = '\0';   
 
         /* last field = password */
         char *passPtr = strrchr(line, '|');
@@ -140,15 +140,15 @@ void userPassword(){
 
         printf("Username: ");
         scanf("%19s", username);
-        getchar();                       /* scanf eken ithuru '\n' eka ayin karanna */
+        getchar();                       
 
         printf("Password: ");
         fflush(stdout);
         i = 0;
         while(1){
             ch = readKey();
-            if(ch == 13 || ch == 10) break;            /* Enter: Windows 13, Linux 10 */
-            if(ch == 8 || ch == 127){                  /* Backspace: Windows 8, Linux 127 */
+            if(ch == 13 || ch == 10) break;            
+            if(ch == 8 || ch == 127){                 
                 if(i > 0){
                     i--;
                     printf("\b \b");
@@ -164,7 +164,7 @@ void userPassword(){
 
         if(checkLogin(username, password)){
             showMainMenu();
-            return;                     /* back to login menu after logout */
+            return;                     
         } else {
             printf("\n\nWrong Username or password\n");
             printf("Press Enter to try again...");
