@@ -9,6 +9,7 @@ int main(){
     return 0;
 }
 
+
 /*main login and register page*/
 
 void login(){
@@ -48,17 +49,49 @@ void login(){
     while(1);
 }
 
+
+int checkLogin(const char *username, const char *password){
+    FILE *fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    if(fp == NULL){
+        return 0;               /* file not found */
+    }
+
+    char line[512];
+    int found = 0;
+
+    while(fgets(line, sizeof(line), fp)){
+        line[strcspn(line, "\r\n")] = '\0';   /* remove newline */
+
+        /* last field = password */
+        char *passPtr = strrchr(line, '|');
+        if(passPtr == NULL) continue;
+        *passPtr = '\0';
+        passPtr++;
+
+        /* second last field = username */
+        char *userPtr = strrchr(line, '|');
+        userPtr = (userPtr == NULL) ? line : userPtr + 1;
+
+        if(strcmp(userPtr, username) == 0 && strcmp(passPtr, password) == 0){
+            found = 1;
+            break;
+        }
+    }
+
+    fclose(fp);
+    return found;
+}
+
 /*username and password page*/
 
 void userPassword(){
     char username[20];
     char password[20];
-    char correctUser[] = "admin";
-    char correctPass[] = "1234";
-    int i = 0;
+    int i;
     char ch;
-  do{  
-    clearScreen();
+
+    while(1){
+        clearScreen();
         printf("================================================================\n\n");
         printf("UNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
         printf("\n\n");
@@ -68,36 +101,33 @@ void userPassword(){
         printf("\n\n================================================================\n");
         printf("\n");
 
-    /*give username*/
-    printf("Username: ");
-    scanf("%s", username);
+        printf("Username: ");
+        scanf("%19s", username);
 
-    /*give password*/
-    printf("Password: ");
-    i = 0;
-    while(1) {
-        ch = getch();
-        if(ch == 13) break;
-        if(ch == 8) {
-            if(i > 0) {
-                i--;
-                printf("\b \b");
+        printf("Password: ");
+        i = 0;
+        while(1){
+            ch = getch();
+            if(ch == 13) break;
+            if(ch == 8){
+                if(i > 0){
+                    i--;
+                    printf("\b \b");
+                }
+            } else if(i < 19){          /* prevent overflow */
+                password[i++] = ch;
+                printf("*");
             }
+        }
+        password[i] = '\0';
+
+        if(checkLogin(username, password)){
+            showMainMenu();
+            return;                     /* back to login menu after logout */
         } else {
-            password[i] = ch;
-            i++;
-            printf("*");
+            printf("\n\nWrong Username or password\n");
+            printf("Press any key to try again...");
+            getch();
         }
     }
-    password[i] = '\0';
-
-    /*check corect username and password*/
-    if(strcmp(username, correctUser) == 0 && strcmp(password, correctPass) == 0) {
-        showMainMenu();
-    } 
-    else {
-        printf("\n\nWrong Username or password ❌\n");
-    }
 }
- while(1);
-}   

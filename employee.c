@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "employee.h"
+#include "menu.h"
 
 struct employee
 {
@@ -26,6 +27,7 @@ void addEmployee()
 
     do
     {
+        clearScreen();
         printf("Enter the Employee ID: ");
         fgets(emp.emp_id, sizeof(emp.emp_id), stdin);
         emp.emp_id[strcspn(emp.emp_id, "\n")] = '\0';
@@ -143,7 +145,7 @@ void addEmployee()
     fgets(emp.password, sizeof(emp.password), stdin);
     emp.password[strcspn(emp.password, "\n")] = '\0';
 
-    FILE *fp = fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "a");
+    FILE *fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "a");
     if (fp == NULL)
     {
         printf("Error opening file! Check the folder path.\n");
