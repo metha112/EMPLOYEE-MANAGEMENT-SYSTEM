@@ -29,7 +29,10 @@ void login(){
         printf("[0] Exit\n\n");
         printf("----------------------------------------------------------------\n");
         printf("Enter Choice : ");
-        scanf("%d",&choice);
+        if(scanf("%d",&choice) != 1){
+            choice = -1;                 /* letter ekak gahuwoth infinite loop wenna epa */
+            scanf("%*[^\n]");
+        }
         getchar();
         switch(choice){
             case 1:
@@ -37,7 +40,7 @@ void login(){
                 break;
             case 2:
                 addEmployee();
-                break;    
+                break;
             case 0:
                 exit(0);
             default:
@@ -48,48 +51,48 @@ void login(){
     }
     while(1);
 }
-
-
+ 
+ 
 int checkLogin(const char *username, const char *password){
-    FILE *fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    FILE *fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement/employee.txt", "r");
     if(fp == NULL){
         return 0;               /* file not found */
     }
-
+ 
     char line[512];
     int found = 0;
-
+ 
     while(fgets(line, sizeof(line), fp)){
         line[strcspn(line, "\r\n")] = '\0';   /* remove newline */
-
+ 
         /* last field = password */
         char *passPtr = strrchr(line, '|');
         if(passPtr == NULL) continue;
         *passPtr = '\0';
         passPtr++;
-
+ 
         /* second last field = username */
         char *userPtr = strrchr(line, '|');
         userPtr = (userPtr == NULL) ? line : userPtr + 1;
-
+ 
         if(strcmp(userPtr, username) == 0 && strcmp(passPtr, password) == 0){
             found = 1;
             break;
         }
     }
-
+ 
     fclose(fp);
     return found;
 }
-
+ 
 /*username and password page*/
-
+ 
 void userPassword(){
     char username[20];
     char password[20];
     int i;
-    char ch;
-
+    int ch;                              /* char wenuwata int (getch eka int return karanawa) */
+ 
     while(1){
         clearScreen();
         printf("================================================================\n\n");
@@ -100,34 +103,40 @@ void userPassword(){
         printf("Loging Employs");
         printf("\n\n================================================================\n");
         printf("\n");
-
+ 
         printf("Username: ");
         scanf("%19s", username);
-
+        getchar();                       /* scanf eken ithuru '\n' eka ayin karanna */
+ 
         printf("Password: ");
+        fflush(stdout);                  /* Linux wala prompt eka dang pennanna */
         i = 0;
         while(1){
             ch = getch();
-            if(ch == 13) break;
-            if(ch == 8){
+            if(ch == 13 || ch == 10) break;            /* Enter: Windows 13, Linux 10 */
+            if(ch == 8 || ch == 127){                  /* Backspace: Windows 8, Linux 127 */
                 if(i > 0){
                     i--;
                     printf("\b \b");
+                    fflush(stdout);
                 }
             } else if(i < 19){          /* prevent overflow */
-                password[i++] = ch;
+                password[i++] = (char)ch;
                 printf("*");
+                fflush(stdout);
             }
         }
         password[i] = '\0';
-
+ 
         if(checkLogin(username, password)){
             showMainMenu();
             return;                     /* back to login menu after logout */
         } else {
             printf("\n\nWrong Username or password\n");
             printf("Press any key to try again...");
+            fflush(stdout);
             getch();
         }
     }
 }
+ 
