@@ -130,11 +130,11 @@ void userPassword(){
     while(1){
         clearScreen();
         printf("================================================================\n\n");
-        printf("UNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
+        printf("\tUNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
         printf("\n\n");
-        printf("EMPLOYEE MANAGEMENT SYSTEM");
+        printf("\t\tEMPLOYEE MANAGEMENT SYSTEM");
         printf("\n\n");
-        printf("Loging Employs");
+        printf("\t\t    LOGING EMPLOYEE");
         printf("\n\n================================================================\n");
         printf("\n");
 

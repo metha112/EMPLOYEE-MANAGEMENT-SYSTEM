@@ -79,7 +79,7 @@ void addEmployee()
         printf("\nCategory:\n");
         printf("1. Academic\n");
         printf("2. Technical\n");
-        printf("3. Non-academic\n");
+        printf("3. Non-academic(Technical)\n");
         printf("Select (number): ");
         fgets(buffer, sizeof(buffer), stdin);
         c = atoi(buffer);
@@ -93,7 +93,7 @@ void addEmployee()
             strcpy(emp.category, "Technical");
             break;
         case 3:
-            strcpy(emp.category, "Non-academic");
+            strcpy(emp.category, "Non-academic(Technical)");
             break;
         default:
             strcpy(emp.category, "Unknown");
