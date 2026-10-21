@@ -4,6 +4,5 @@ void addEmployee();
 void viewEmployees();
 void searchEmployee();
 void updateEmployee();
-void deleteEmployee();
 void clearScreen();
 #endif

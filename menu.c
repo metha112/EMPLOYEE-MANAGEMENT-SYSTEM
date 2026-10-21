@@ -23,9 +23,9 @@ void showMainMenu(){
     do{
         clearScreen();
         printf("================================================================\n\n");
-        printf("UNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
+        printf("\tUNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
         printf("\n\n");
-        printf("EMPLOYEE MANAGEMENT SYSTEM");
+        printf("\t\tEMPLOYEE MANAGEMENT SYSTEM");
         printf("\n\n================================================================\n");
         printf("\n");
         printf("[1] Employee Management\n\n");
@@ -74,14 +74,13 @@ void showEmployeeMenu(){
     do{
         clearScreen();
         printf("================================================================\n\n");
-        printf("EMPLOYEE MANAGEMENT MODULE");
+        printf("\t\tEMPLOYEE MANAGEMENT MODULE");
         printf("\n\n");
         printf("================================================================\n\n");
         printf("[1] Add Employee\n\n");
         printf("[2] View Employees\n\n");
         printf("[3] Search\n\n");
         printf("[4] Update\n\n");
-        printf("[5] Delete\n\n");
         printf("[0] Back\n\n");
         printf("----------------------------------------------------------------\n");
         printf("Enter Choice : ");
@@ -91,7 +90,6 @@ void showEmployeeMenu(){
             case 2: viewEmployees(); break;
             case 3: searchEmployee(); break;
             case 4: updateEmployee(); break;
-            case 5: deleteEmployee(); break;
             case 0: return;
             default: printf("Invalid!"); getchar();
         }
@@ -101,7 +99,6 @@ void showEmployeeMenu(){
 void viewEmployees(){ clearScreen(); printf("View Employees\nPress Enter..."); getchar(); }
 void searchEmployee(){ clearScreen(); printf("Search\nPress Enter..."); getchar(); }
 void updateEmployee(){ clearScreen(); printf("Update\nPress Enter..."); getchar(); }
-void deleteEmployee(){ clearScreen(); printf("Delete\nPress Enter..."); getchar(); }
 
 
 char departments[4][100] = {"Department of Engineering Technology","Department of Information and Communication Technology","Department of Biosystems Technology","Department of Multidisciplinary Studies"};
@@ -111,7 +108,7 @@ int selectDepartment(){
     do{
         clearScreen();
          printf("===============================================\n\n");
-        printf("\tSELECT DEPARTMENT\n\n");
+        printf("\t\tSELECT DEPARTMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Department of Engineering Technology\n\n");
         printf("[2] Department of Information and Communication Technology\n\n");
@@ -142,7 +139,7 @@ void showAttendanceMenu(){
         clearScreen();
        printf("===============================================\n\n");
         printf(" %s Department\n\n", departments[selectedDept-1]);
-        printf(" ATTENDANCE MANAGEMENT\n\n");
+        printf("\t\tATTENDANCE MANAGEMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Mark Attendance\n\n");
         printf("[2] View Attendance\n\n");
@@ -179,7 +176,7 @@ void showLeave(){
     do{
         clearScreen();
        printf("===============================================\n\n");
-        printf(" Leave MANAGEMENT\n\n");
+        printf("\t\tLeave MANAGEMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Apply Leave \n\n");
         printf("[2] View Leave \n\n");
@@ -214,7 +211,7 @@ void showSalary(){
     do{
         clearScreen();
        printf("===============================================\n\n");
-        printf(" SALARY MANAGEMENT\n\n");
+        printf("\t\tSALARY MANAGEMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Basic Salary  \n\n");
         printf("[2] Allowances  \n\n");
