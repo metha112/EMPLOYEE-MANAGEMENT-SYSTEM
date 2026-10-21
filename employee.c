@@ -27,8 +27,8 @@ void addEmployee()
     int d,c;
     char ans;
 
-    do
-    {
+    
+    
          clearScreen();
         printf("================================================================\n\n");
         printf("\tUNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
@@ -177,7 +177,9 @@ void addEmployee()
         fgets(buffer, sizeof(buffer), stdin);
         ans = buffer[0];
 
-    } while (ans != 'Y' && ans != 'y');
+    if (ans != 'Y' && ans != 'y'){
+             login();
+    }
 
     strcpy(emp.username, emp.emp_id);
     printf("UserName is : %s\n", emp.username);
