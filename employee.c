@@ -5,9 +5,9 @@
 
 struct employee
 {
-    char emp_id[20];
+    char emp_id[50];
     char emp_name[50];
-    char nic[15];
+    char nic[30];
     char phone[15];
     char dep[30];
     char category[20];
