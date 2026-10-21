@@ -11,6 +11,7 @@ struct employee
     char nic[15];
     char phone[15];
     char dep[30];
+    char depr[60];
     char join_date[15];
     char username[20];
     char password[20];
@@ -18,14 +19,25 @@ struct employee
 
 void addEmployee()
 {
+
+
+
     struct employee emp;
     char buffer[20];
-    int d;
+    int d,c;
     char ans;
 
     do
     {
-        clearScreen();
+         clearScreen();
+        printf("================================================================\n\n");
+        printf("\tUNIVERSITY OF RUHUNA - FACULTY OF TECHNOLOGY");
+        printf("\n\n");
+        printf("\t\tEMPLOYEE MANAGEMENT SYSTEM");
+        printf("\n\n");
+        printf("\t\t    REGISTER");
+        printf("\n\n================================================================\n");
+        printf("\n");
         printf("Enter the Employee ID: ");
         fgets(emp.emp_id, sizeof(emp.emp_id), stdin);
         emp.emp_id[strcspn(emp.emp_id, "\n")] = '\0';
@@ -48,7 +60,9 @@ void addEmployee()
         printf("Select (number): ");
         fgets(buffer, sizeof(buffer), stdin);
         d = atoi(buffer);
-
+        
+        printf("\n");
+         
         switch (d)
         {
         case 1:
@@ -118,6 +132,43 @@ void addEmployee()
             break;
         }
 
+        printf("\n");
+
+        printf("1. Department of Engineering Technology\n");
+        printf("2. Department of Information and Communication Technology\n");
+        printf("3. Department of Biosystems Technology\n");
+        printf("4. Department of Multidisciplinary Studies\n");
+        printf("5. None Dipartment\n");
+        printf("Select (number): ");
+        fgets(buffer, sizeof(buffer), stdin);
+        c = atoi(buffer);
+
+        printf("\n");
+
+        switch (c)
+        {
+        case 1:
+                strcpy(emp.depr, "Department of Engineering Technology");
+                break;
+        case 2:
+                strcpy(emp.depr, "Department of Information and Communication Technology");
+                break; 
+        case 3:
+                strcpy(emp.depr, "Department of Biosystems Technology");
+                break; 
+        case 4:
+                strcpy(emp.depr, "Department of Multidisciplinary Studies");
+                break;
+        case 5:
+                strcpy(emp.depr, "None Dipartment");
+                break;
+        default:
+            strcpy(emp.dep, "Unknown");
+            break;
+        }         
+                        
+                               
+
         printf("\nJoin Date (DD/MM/YYYY): ");
         fgets(emp.join_date, sizeof(emp.join_date), stdin);
         emp.join_date[strcspn(emp.join_date, "\n")] = '\0';
@@ -142,9 +193,9 @@ void addEmployee()
         return;
     }
 
-    fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s\n",
+    fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s|%s\n",
             emp.emp_id, emp.emp_name, emp.nic, emp.phone,
-            emp.dep,emp.join_date, emp.username, emp.password);
+            emp.dep, emp.depr, emp.join_date, emp.username, emp.password);
 
     fclose(fp);
     printf("Employee added successfully.\n");
