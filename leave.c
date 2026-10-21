@@ -1,10 +1,11 @@
 #include<stdio.h>
 #include<string.h>
+#include <stdlib.h>
 
 struct Leave
 {
     
-    int employeeID;
+    char employeeID[50];
     char leaveType[20];
     int leavedays;
     char status[20];
@@ -91,29 +92,32 @@ void apply_leave(){
 
 
     FILE *file;
-    int empid,schempid,ph;
+    
     int x=0,y=0;
-    float salary,allowance,deduction,netsalary;
-    char name[50],dep[50],position[50],email[100];
+    
+    char empid[50],name[50],nic[30],ph[15],position[20],designation[30],dep[30],joint_date[15],username[20],password[20];
     
     
 
     file=fopen("employee.txt","r");
     if (file==NULL)
     {
-        printf("file is not in management system\n");
+        printf("file is not in management system \n");
 
         y=1;
     }
     if (y==0)
     {
-        printf("Enter Employee ID: ");
-        scanf("%d", &l1.employeeID);
+        printf("Enter Employee ID: "); 
+        scanf("%49s", l1.employeeID);
 
-        while (fscanf(file, "%d %49s %49s %49s %99s %d %f",&empid,name,dep,position,email,&ph,&salary)==7)
+        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%19[^|]|%29[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^\n]\n",empid,name,nic,ph,position,designation,dep,joint_date,username,password)==10)
         {
-            if (empid==l1.employeeID)
+            if (strcmp(empid, l1.employeeID)==0)
             {
+
+
+               
 
                 printf("Enter number of leave days: ");
                 scanf("%d", &l1.leavedays);
@@ -127,7 +131,7 @@ void apply_leave(){
                 strcpy(l1.status, "Pending");
 
                 printf("\nLeave application details\n");
-                printf("Employee ID: %d\n", l1.employeeID);
+                printf("Employee ID: %s\n", l1.employeeID);
                 printf("Leave Type: %s\n", l1.leaveType);
                 printf("Leave Days: %d\n", l1.leavedays);
                 printf("Status: %s\n", l1.status);
@@ -143,7 +147,7 @@ void apply_leave(){
                     return;
                 }
 
-                fprintf(leaveFile, "%d %s %d %s\n",
+                fprintf(leaveFile, "%s %s %d %s\n",
                         l1.employeeID,
                         l1.leaveType,
                         l1.leavedays,
@@ -185,13 +189,13 @@ void view_leave(){
 
     printf("\n--- Leave Applications ---\n");
 
-    while (fscanf(file, "%d %19s %d %19s",
-                  &l1.employeeID,
+    while (fscanf(file, "%49s %19s %d %19s",
+                  l1.employeeID,
                   l1.leaveType,
                   &l1.leavedays,
                   l1.status) == 4)
     {
-        printf("\nEmployee ID: %d\n", l1.employeeID);
+        printf("\nEmployee ID: %s\n", l1.employeeID);
         printf("Leave Type: %s\n", l1.leaveType);
         printf("Leave Days: %d\n", l1.leavedays);
         printf("Status: %s\n", l1.status);
@@ -209,150 +213,183 @@ void view_leave(){
 
 void approve_leave(){
 
+    int password;
 
-    FILE*file ,*temp;
-    struct Leave l1;
-    int empid,found=0;
-    file=fopen("leave.txt","r");
+    printf("enter your data entry password : ");
+    scanf("%d",&password);
 
-
-    if (file==NULL)
+    if (password==123456)
     {
-        printf("No leave applications found!\n");
-        return;
+        FILE*file ,*temp;
+        struct Leave l1;
+        int found=0;
+        char empid[50];
+        file=fopen("leave.txt","r");
+
+
+        if (file==NULL)
+        {
+            printf("No leave applications found!\n");
+            return;
+        }
+        
+        temp=fopen("temp.txt","w");
+
+        if (temp == NULL)
+        {
+            printf("Unable to create temporary file!\n");
+            fclose(file);
+            return;
+        }
+
+        printf("Enter Employee ID to approve leave: ");
+        scanf("%49s", empid);
+
+        while (fscanf(file, "%49s %19s %d %19s",
+                    l1.employeeID,
+                    l1.leaveType,
+                    &l1.leavedays,
+                    l1.status) == 4)
+        {
+            if (strcmp(l1.employeeID,empid)==0)
+            {
+                if (strcmp(l1.status, "Pending") == 0)
+                {
+                    strcpy(l1.status,"Approved");
+                    found=1;
+                }
+                else
+                {
+                    printf("Leave status is already %s.\n",
+                        l1.status);
+                    found = 1;
+                }
+
+                
+            }
+            fprintf(temp, "%s %s %d %s\n",
+                    l1.employeeID,
+                    l1.leaveType,
+                    l1.leavedays,
+                    l1.status);
+        }
+        fclose(file);
+        fclose(temp);
+
+        if (rename("temp.txt", "leave.txt") != 0)
+        {
+            perror("Rename failed");
+            return;
+        }
+        
+            
+        if (found == 1)
+        {
+            printf("Leave approval process completed.\n");
+        }
+        else
+        {
+            printf("Employee ID not found!\n");
+        }
+
+
+
+
+
+    }
+    else{
+        printf("invalid your entry password\n");
     }
     
-    temp=fopen("temp.txt","w");
-
-    if (temp == NULL)
-    {
-        printf("Unable to create temporary file!\n");
-        fclose(file);
-        return;
-    }
-
-    printf("Enter Employee ID to approve leave: ");
-    scanf("%d", &empid);
-
-    while (fscanf(file, "%d %19s %d %19s",
-                  &l1.employeeID,
-                  l1.leaveType,
-                  &l1.leavedays,
-                  l1.status) == 4)
-    {
-        if (l1.employeeID==empid)
-        {
-            if (strcmp(l1.status, "Pending") == 0)
-            {
-                strcpy(l1.status,"Approved");
-                found=1;
-            }
-            else
-            {
-                printf("Leave status is already %s.\n",
-                       l1.status);
-                found = 1;
-            }
-
-            
-        }
-        fprintf(temp, "%d %s %d %s\n",
-                l1.employeeID,
-                l1.leaveType,
-                l1.leavedays,
-                l1.status);
-    }
-    fclose(file);
-    fclose(temp);
-
-    if (rename("temp.txt", "leave.txt") != 0)
-    {
-        printf("Unable to update leave file!\n");
-        return;
-    }
-        
-    if (found == 1)
-    {
-        printf("Leave approval process completed.\n");
-    }
-    else
-    {
-        printf("Employee ID not found!\n");
-    }
 
 
 
-
-}
+}   
 void reject_leave(){
 
 
-    FILE*file ,*temp;
-    struct Leave l1;
-    int empid,found=0;
-    file=fopen("leave.txt","r");
+    int password;
 
+    printf("enter your data entry password : ");
+    scanf("%d",&password);
 
-    if (file==NULL)
+    if (password==123456)
     {
-        printf("No leave applications found!\n");
-        return;
-    }
-    
-    temp=fopen("temp.txt","w");
+            FILE*file ,*temp;
+            struct Leave l1;
+            int found=0;
+            char empid[50];
+            file=fopen("leave.txt","r");
 
-    if (temp == NULL)
-    {
-        printf("Unable to create temporary file!\n");
-        fclose(file);
-        return;
-    }
 
-    printf("Enter Employee ID to reject leave: ");
-    scanf("%d", &empid);
-
-    while (fscanf(file, "%d %19s %d %19s",
-                  &l1.employeeID,
-                  l1.leaveType,
-                  &l1.leavedays,
-                  l1.status) == 4)
-    {
-        if (l1.employeeID==empid)
-        {
-            if (strcmp(l1.status, "Pending") == 0)
+            if (file==NULL)
             {
-                strcpy(l1.status,"Rejected");
-                found=1;
+                printf("No leave applications found!\n");
+                return;
+            }
+            
+            temp=fopen("temp.txt","w");
+
+            if (temp == NULL)
+            {
+                printf("Unable to create temporary file!\n");
+                fclose(file);
+                return;
+            }
+
+            printf("Enter Employee ID to reject leave: ");
+            scanf("%49s", empid);
+
+            while (fscanf(file, "%49s %19s %d %19s",
+                        l1.employeeID,
+                        l1.leaveType,
+                        &l1.leavedays,
+                        l1.status) == 4)
+            {
+                if (strcmp(l1.employeeID, empid)==0)
+                {
+                    if (strcmp(l1.status, "Pending") == 0)
+                    {
+                        strcpy(l1.status,"Rejected");
+                        found=1;
+                    }
+                    else
+                    {
+                        printf("Leave status is already %s.\n", l1.status);
+                        found = 1;
+                    }
+
+                    
+                }
+                fprintf(temp, "%s %s %d %s\n",
+                        l1.employeeID,
+                        l1.leaveType,
+                        l1.leavedays,
+                        l1.status);
+            }
+            fclose(file);
+            fclose(temp);
+
+            if (rename("temp.txt", "leave.txt") != 0)
+            {
+                printf("Unable to update leave file!\n");
+                return;
+            }
+                
+            if (found == 1)
+            {
+                printf("Leave rejection process completed.\n");
             }
             else
             {
-                printf("Leave status is already %s.\n", l1.status);
-                found = 1;
+                printf("Employee ID not found!\n");
+            }
+            }
+            else{
+                printf("invalid your entry password\n");
+                return;
             }
 
-            
-        }
-        fprintf(temp, "%d %s %d %s\n",
-                l1.employeeID,
-                l1.leaveType,
-                l1.leavedays,
-                l1.status);
-    }
-    fclose(file);
-    fclose(temp);
 
-    if (rename("temp.txt", "leave.txt") != 0)
-    {
-        printf("Unable to update leave file!\n");
-        return;
-    }
-        
-    if (found == 1)
-    {
-        printf("Leave rejection process completed.\n");
-    }
-    else
-    {
-        printf("Employee ID not found!\n");
-    }
+    
 }
