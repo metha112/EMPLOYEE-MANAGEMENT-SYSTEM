@@ -35,7 +35,7 @@ void addEmployee()
         printf("\n\n");
         printf("\t\tEMPLOYEE MANAGEMENT SYSTEM");
         printf("\n\n");
-        printf("\t\t    REGISTER");
+        printf("\t\t    REGISTER EMPLOYEE");
         printf("\n\n================================================================\n");
         printf("\n");
         printf("Enter the Employee ID: ");
