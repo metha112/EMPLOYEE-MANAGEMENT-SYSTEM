@@ -188,12 +188,17 @@ void showLeave(){
         printf("Enter Choice : ");
         scanf("%d",&choice); getchar();
         switch(choice){
-            case 1: applyLeave (); break;
-            case 2: viewLeave (); break;
-            case 3: approveLeave (); break;
-            case 4: rejectLeave (); break;
+            case 1: apply_leave(); 
+                    break;
+            case 2: view_leave();
+                    break;
+            case 3: approve_leave(); 
+                    break;
+            case 4: reject_leave();
+                    break;
             case 0: return;
-            default: printf("Invalid!"); getchar();
+            default: printf("Invalid!"); 
+            getchar();
         }
     }while(1);
 }

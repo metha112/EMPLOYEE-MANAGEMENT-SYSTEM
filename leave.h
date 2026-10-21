@@ -1,8 +1,7 @@
 #ifndef LEAVE_H
 #define LEAVE_H
-void showLeave();
-void applyLeave ();
-void viewLeave ();
-void approveLeave ();
-void rejectLeave ();
+void apply_leave();
+void view_leave();
+void approve_leave();
+void reject_leave();
 #endif

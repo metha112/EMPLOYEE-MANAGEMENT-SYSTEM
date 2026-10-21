@@ -7,4 +7,5 @@ void showEmployeeMenu();
 void showDepartmentMenuForAttendance();
 void showAttendanceMenu();
 void userPassword();
+void showLeave();
 #endif
