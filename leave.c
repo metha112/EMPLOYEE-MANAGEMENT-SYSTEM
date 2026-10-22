@@ -66,7 +66,7 @@ void apply_leave(){
     
     
 
-    file=fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
+    file=fopen("File_Manegement\\employee.txt","r");
     if (file==NULL)
     {
         printf("file is not in management system \n");
@@ -105,7 +105,7 @@ void apply_leave(){
                 
                 FILE *leaveFile;
 
-                leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
+                leaveFile = fopen("File_Manegement\\leave.txt", "a");
 
                 if (leaveFile == NULL)
                 {
