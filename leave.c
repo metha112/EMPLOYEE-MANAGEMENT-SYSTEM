@@ -66,7 +66,7 @@ void apply_leave(){
     
     
 
-    file=fopen("File_Manegement\\employee.txt","r");
+    file=fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
     if (file==NULL)
     {
         printf("file is not in management system \n");
@@ -75,16 +75,13 @@ void apply_leave(){
     }
     if (y==0)
     {
-        printf("Enter Employee ID: "); 
+        printf("Enter Employee ID: ");
         scanf("%49s", l1.employeeID);
 
-        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%19[^|]|%29[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^\n]\n",empid,name,nic,ph,position,designation,dep,joint_date,username,password)==10)
+        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%19[^|]|%29[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^|]\n",empid,name,nic,ph,position,designation,dep,joint_date,username,password)==10)
         {
             if (strcmp(empid, l1.employeeID)==0)
             {
-
-
-               
 
                 printf("Enter number of leave days: ");
                 scanf("%d", &l1.leavedays);
@@ -105,7 +102,7 @@ void apply_leave(){
                 
                 FILE *leaveFile;
 
-                leaveFile = fopen("File_Manegement\\leave.txt", "a");
+                leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
 
                 if (leaveFile == NULL)
                 {
