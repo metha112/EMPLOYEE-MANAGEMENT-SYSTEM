@@ -101,13 +101,27 @@ void searchEmployee(){ clearScreen(); printf("Search\nPress Enter..."); getchar(
 void updateEmployee(){ clearScreen(); printf("Update\nPress Enter..."); getchar(); }
 
 
-char departments[4][100] = {"Department of Engineering Technology","Department of Information and Communication Technology","Department of Biosystems Technology","Department of Multidisciplinary Studies"};
+char departments[4][100] = {
+    "Department of Engineering Technology",
+    "Department of Information and Communication Technology",
+    "Department of Biosystems Technology",
+    "Department of Multidisciplinary Studies"
+};
+int selectedDept = 0;
 
-int selectDepartment(){
-    int choice;
-    do{
+/* clearScreen() already menu.c eke thiyenawanam meka nawatha liyanna epa */
+
+static void readLine(const char *prompt, char *buf, int size) {
+    printf("%s", prompt);
+    if (!fgets(buf, size, stdin)) { buf[0] = '\0'; return; }
+    buf[strcspn(buf, "\r\n")] = '\0';
+}
+
+int selectDepartment(void) {
+    char buf[20];
+    do {
         clearScreen();
-         printf("===============================================\n\n");
+        printf("===============================================\n\n");
         printf("\t\tSELECT DEPARTMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Department of Engineering Technology\n\n");
@@ -116,29 +130,26 @@ int selectDepartment(){
         printf("[4] Department of Multidisciplinary Studies\n\n");
         printf("[0] Back\n\n");
         printf("-----------------------------------------------\n");
-        printf("Enter Choice : ");
-        scanf("%d",&choice); getchar();
-        if(choice>=0 && choice<=4) return choice;
-    }while(1);
+        readLine("Enter Choice : ", buf, sizeof buf);
+        char *end;
+        long c = strtol(buf, &end, 10);
+        if (end != buf && c >= 0 && c <= 4) return (int)c;
+    } while (1);
 }
-void showDepartmentMenuForAttendance(){
+
+void showDepartmentMenuForAttendance(void) {
     int dept = selectDepartment();
-    if(dept==0) return;
+    if (dept == 0) return;
     selectedDept = dept;
     showAttendanceMenu();
 }
 
-/*attendance menu*/
-
-
-int selectedDept=0;
-
-void showAttendanceMenu(){
-    int choice;
-    do{
+void showAttendanceMenu(void) {
+    char buf[20];
+    do {
         clearScreen();
-       printf("===============================================\n\n");
-        printf(" %s Department\n\n", departments[selectedDept-1]);
+        printf("===============================================\n\n");
+        printf(" %s\n\n", departments[selectedDept - 1]);
         printf("\t\tATTENDANCE MANAGEMENT\n\n");
         printf("===============================================\n\n");
         printf("[1] Mark Attendance\n\n");
@@ -148,27 +159,21 @@ void showAttendanceMenu(){
         printf("[0] Back\n\n");
         printf("===============================================\n\n");
         printf("Example:\n\n");
-        printf("Employee ID : 1001\n\n");
+        printf("Employee ID : TG/IT/2025/2517\n\n");
         printf("Date : 2026-10-08\n\n");
         printf("-----------------------------------------------\n");
-        printf("Enter Choice : ");
-        scanf("%d",&choice); getchar();
-        switch(choice){
-            case 1: markAttendance(); break;
-            case 2: viewAttendance(); break;
+        readLine("Enter Choice : ", buf, sizeof buf);
+
+        if (buf[0] == '0' && buf[1] == '\0') return;
+        switch (atoi(buf)) {
+            case 1: markAttendance();   break;
+            case 2: viewAttendance();   break;
             case 3: searchAttendance(); break;
-            case 4: monthlyReport(); break;
-            case 0: return;
+            case 4: monthlyReport();    break;
             default: printf("Invalid!"); getchar();
         }
-    }while(1);
+    } while (1);
 }
-
-void markAttendance(){clearScreen(); printf("Mark Attendance\nPress Enter..."); getchar();}
-void viewAttendance(){ clearScreen(); printf("View Attendance\nPress Enter..."); getchar(); }
-void searchAttendance(){ clearScreen(); printf("Search Attendance\nPress Enter..."); getchar(); }
-void monthlyReport(){ clearScreen(); printf("Monthly Report\nPress Enter..."); getchar(); }
-
 /*leave management*/
 
 void showLeave(){
