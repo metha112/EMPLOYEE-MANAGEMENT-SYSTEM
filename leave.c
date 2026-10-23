@@ -55,7 +55,7 @@ void apply_leave(){
     printf("Annual leave=1\n");
     printf("Casual leave=2\n");
     printf("Medicle leave=3\n");
-    printf("No-Pay leave=4\n");
+    
     
 
     printf("Enter your leave type : ");
@@ -76,9 +76,7 @@ void apply_leave(){
     case 3:
             strcpy(l1.leaveType, "Medical");
             break;
-    case 4:
-            strcpy(l1.leaveType, "No-Pay");
-            break;
+    
     
     default:
             printf("Invalid leave type!\n");
