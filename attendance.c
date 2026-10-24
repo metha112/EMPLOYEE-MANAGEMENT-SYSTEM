@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "attendance.h"
+#include "attendance_count.h"   /* <-- ADD KALA */
 #include "menu.h"
 
 #define EMP_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
@@ -170,6 +171,8 @@ void markAttendance(void) {
     if (!fp) { printf("\nCannot open %s!", ATT_FILE); attPause(); return; }
     fprintf(fp, "%s|%s|%s|%s|%s|%s\n", id, name, dept, date, statuses[s], timeStr);
     fclose(fp);
+
+    update_attendance_count();   /* <-- METHANA: fclose ekata passe */
 
     printf("\nAttendance marked: %s - %s (%s)", name, statuses[s], date);
     attPause();

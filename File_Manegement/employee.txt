@@ -2,3 +2,4 @@ TG/IT/2025/2517|A.M.M.Sayuranga|20051752346|0770110668|Demonstrator|Department o
 200546|jhasgjhag|36455432413545||Registant|Department of Engineering Technology|02/02/2005|200546|123456
 001|Sithum Nimsara|20034321258|0753643982|Lecturer|Department of Information and Communication Technology|12/05/2016|001|12345
 TG/IT/2025/2511|Kamal|200564789|4664646567|professor|None Dipartment|02/03/2025|TG/IT/2025/2511|123
+TG/IT/2025/2514|Isum|123654897|23654687|Lecturer|Department of Engineering Technology|10/25/2025|TG/IT/2025/2514|1234

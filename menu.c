@@ -194,8 +194,12 @@ void showLeave(){
         scanf("%d",&choice); getchar();
         switch(choice){
             case 1: apply_leave(); 
+                    printf("\nPress Enter to continue...");
+                    getchar();
                     break;
             case 2: view_leave();
+                    printf("\nPress Enter to continue...");
+                    getchar();
                     break;
             case 3: approve_leave(); 
                     break;

@@ -3,130 +3,81 @@
 #include "leave.h"
 #include "menu.h"
 
-
 void apply_leave(){
-    
     int choice;
     struct Leave l1;
+
     printf("\n--- Select Leave Type ---\n");
     printf("Annual leave=1\n");
     printf("Casual leave=2\n");
-    printf("Medicle leave=3\n");
-    
-    
-
+    printf("Medical leave=3\n");
     printf("Enter your leave type : ");
-    scanf("%d",&choice);
+    if (scanf("%d", &choice) != 1) {
+        int c; while ((c = getchar()) != '\n' && c != EOF);
+        printf("Invalid input!\n");
+        return;
+    }
 
+    switch (choice) {
+        case 1: strcpy(l1.leaveType, "Annual"); break;
+        case 2: strcpy(l1.leaveType, "Casual"); break;
+        case 3: strcpy(l1.leaveType, "Medical"); break;
+        default: printf("Invalid leave type!\n"); return;
+    }
 
-    
+    FILE *file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    if (file == NULL) {
+        printf("employee file not found!\n");
+        return;
+    }
 
+    printf("Enter Employee ID: ");
+    scanf("%49s", l1.employeeID);
 
-    switch (choice)
-    {
-    case 1:
-        strcpy(l1.leaveType, "Annual");
-        break;
-    case 2:
-        strcpy(l1.leaveType, "Casual");
-        break;
-    case 3:
-            strcpy(l1.leaveType, "Medical");
+    char line[512];
+    int found = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        char *id = strtok(line, "|");          // palaweni field eka (empid)
+        if (id != NULL && strcmp(id, l1.employeeID) == 0) {
+            found = 1;
             break;
-    
-    
-    default:
-            printf("Invalid leave type!\n");
-            return;
-    
-    }
-    
-
-
-
-
-
-    FILE *file;
-    
-    int x=0,y=0;
-    
-    char empid[50],name[50],nic[30],ph[15],position[20],designation[30],dep[30],joint_date[15],username[20],password[20];
-    
-    
-
-    file=fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
-    if (file==NULL)
-    {
-        printf("file is not in management system \n");
-
-        y=1;
-    }
-    if (y==0)
-    {
-        printf("Enter Employee ID: "); 
-        scanf("%49s", l1.employeeID);
-
-        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%19[^|]|%29[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^\n]\n",empid,name,nic,ph,position,designation,dep,joint_date,username,password)==10)
-        {
-            if (strcmp(empid, l1.employeeID)==0)
-            {
-
-
-               
-
-                printf("Enter number of leave days: ");
-                scanf("%d", &l1.leavedays);
-
-                if (l1.leavedays <= 0)
-                {
-                    printf("Invalid number of days!\n");
-                    fclose(file);
-                    return;
-                }
-                strcpy(l1.status, "Pending");
-
-                printf("\nLeave application details\n");
-                printf("Employee ID: %s\n", l1.employeeID);
-                printf("Leave Type: %s\n", l1.leaveType);
-                printf("Leave Days: %d\n", l1.leavedays);
-                printf("Status: %s\n", l1.status);
-                
-                FILE *leaveFile;
-
-                leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
-
-                if (leaveFile == NULL)
-                {
-                    printf("Unable to open leave file!\n");
-                    fclose(file);
-                    return;
-                }
-
-                fprintf(leaveFile, "%s %s %d %s\n",
-                        l1.employeeID,
-                        l1.leaveType,
-                        l1.leavedays,
-                        l1.status);
-
-                fclose(leaveFile);
-
-                printf("Leave application saved successfully!\n");
-
-
-                x=1;
-                break;
-            }
         }
-        if (x==0)
-        {
-            printf("employee is not found\n");
-            fclose(file);
-            return;
-        }
-        fclose(file);
-    
-        
     }
+    fclose(file);
+
+    if (!found) {
+        printf("Employee is not found!\n");
+        return;
+    }
+
+    printf("Enter number of leave days: ");
+    if (scanf("%d", &l1.leavedays) != 1 || l1.leavedays <= 0) {
+        int c; while ((c = getchar()) != '\n' && c != EOF);
+        printf("Invalid number of days!\n");
+        return;
+    }
+
+    strcpy(l1.status, "Pending");
+
+    printf("\nLeave application details\n");
+    printf("Employee ID: %s\n", l1.employeeID);
+    printf("Leave Type: %s\n", l1.leaveType);
+    printf("Leave Days: %d\n", l1.leavedays);
+    printf("Status: %s\n", l1.status);
+
+    FILE *leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
+    if (leaveFile == NULL) {
+        printf("Unable to open leave file!\n");
+        return;
+    }
+
+    fprintf(leaveFile, "%s %s %d %s\n", l1.employeeID, l1.leaveType, l1.leavedays, l1.status);
+    fclose(leaveFile);
+
+    printf("Leave application saved successfully!\n");
+
+    int c; while ((c = getchar()) != '\n' && c != EOF);   // buffer eka clear karanna
 }
 void view_leave(){
    
