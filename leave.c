@@ -1,52 +1,9 @@
 #include<stdio.h>
 #include<string.h>
+#include "leave.h"
+#include "menu.h"
 
 
-struct Leave
-{
-    
-    char employeeID[50];
-    char leaveType[20];
-    int leavedays;
-    char status[20];
-};
-
-void leave(int n);
-void apply_leave();
-void view_leave();
-void approve_leave();
-void reject_leave();
-int main(){
-    int n;
-    printf("enter the number : ");
-    scanf("%d",&n);
-    leave(n);
-
-    return 0;
-}
-void leave(int n){
-    switch (n)
-    {
-    case 1:
-        apply_leave();
-        break;
-    case 2:
-        view_leave();
-        break;
-    case 3:
-        approve_leave();
-        break;
-    case 4:
-        reject_leave();
-        break;
-    
-    case 0:
-        
-        break;
-    default:
-        break;
-    }
-}
 void apply_leave(){
     
     int choice;
@@ -97,7 +54,7 @@ void apply_leave(){
     
     
 
-    file=fopen("employee.txt","r");
+    file=fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
     if (file==NULL)
     {
         printf("file is not in management system \n");
@@ -136,7 +93,7 @@ void apply_leave(){
                 
                 FILE *leaveFile;
 
-                leaveFile = fopen("leave.txt", "a");
+                leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
 
                 if (leaveFile == NULL)
                 {
@@ -177,7 +134,7 @@ void view_leave(){
     struct Leave l1;
     int found = 0;
 
-    file = fopen("leave.txt", "r");
+    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
 
     if (file == NULL)
     {
@@ -229,7 +186,7 @@ void approve_leave()
     int target = -1;
     char empid[50];
 
-    file = fopen("leave.txt", "r");
+    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
 
     if (file == NULL)
     {
@@ -283,7 +240,7 @@ void approve_leave()
 
     strcpy(records[target].status, "Approved");
 
-    temp = fopen("temp.txt", "w");
+    temp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "w");
 
     if (temp == NULL)
     {
@@ -302,7 +259,7 @@ void approve_leave()
 
     fclose(temp);
 
-    if (rename("temp.txt", "leave.txt") != 0)
+    if (rename("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt") != 0)
     {
         perror("Unable to update leave file");
         return;
@@ -336,7 +293,7 @@ void reject_leave()
     int target = -1;
     char empid[50];
 
-    file = fopen("leave.txt", "r");
+    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
 
     if (file == NULL)
     {
@@ -390,7 +347,7 @@ void reject_leave()
 
     strcpy(records[target].status, "Rejected");
 
-    temp = fopen("temp.txt", "w");
+    temp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "w");
 
     if (temp == NULL)
     {
@@ -409,7 +366,7 @@ void reject_leave()
 
     fclose(temp);
 
-    if (rename("temp.txt", "leave.txt") != 0)
+    if (rename("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt") != 0)
     {
         perror("Unable to update leave file");
         return;
