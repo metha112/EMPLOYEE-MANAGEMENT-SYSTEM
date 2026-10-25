@@ -101,11 +101,12 @@ void searchEmployee(){ clearScreen(); printf("Search\nPress Enter..."); getchar(
 void updateEmployee(){ clearScreen(); printf("Update\nPress Enter..."); getchar(); }
 
 
-char departments[4][100] = {
+char departments[5][100] = {
     "Department of Engineering Technology",
     "Department of Information and Communication Technology",
     "Department of Biosystems Technology",
-    "Department of Multidisciplinary Studies"
+    "Department of Multidisciplinary Studies",
+    "None Dipartment"
 };
 int selectedDept = 0;
 
@@ -128,12 +129,13 @@ int selectDepartment(void) {
         printf("[2] Department of Information and Communication Technology\n\n");
         printf("[3] Department of Biosystems Technology\n\n");
         printf("[4] Department of Multidisciplinary Studies\n\n");
+        printf("[5] None Dipartment\n\n");
         printf("[0] Back\n\n");
         printf("-----------------------------------------------\n");
         readLine("Enter Choice : ", buf, sizeof buf);
         char *end;
         long c = strtol(buf, &end, 10);
-        if (end != buf && c >= 0 && c <= 4) return (int)c;
+        if (end != buf && c >= 0 && c <= 5) return (int)c;
     } while (1);
 }
 
@@ -143,7 +145,6 @@ void showDepartmentMenuForAttendance(void) {
     selectedDept = dept;
     showAttendanceMenu();
 }
-
 void showAttendanceMenu(void) {
     char buf[20];
     do {
@@ -158,7 +159,7 @@ void showAttendanceMenu(void) {
         printf("[4] Monthly Report\n\n");
         printf("[0] Back\n\n");
         printf("===============================================\n\n");
-        printf("Example:\n\n");
+        printf("Example (after selecting an option):\n\n");
         printf("Employee ID : TG/IT/2025/2517\n\n");
         printf("Date : 2026-10-08\n\n");
         printf("-----------------------------------------------\n");
@@ -170,7 +171,9 @@ void showAttendanceMenu(void) {
             case 2: viewAttendance();   break;
             case 3: searchAttendance(); break;
             case 4: monthlyReport();    break;
-            default: printf("Invalid!"); getchar();
+            default:
+                printf("Invalid! Press Enter to continue...");
+                getchar();
         }
     } while (1);
 }

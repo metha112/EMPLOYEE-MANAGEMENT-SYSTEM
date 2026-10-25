@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-extern char departments[4][100];
+extern char departments[5][100];
 extern int  selectedDept;
 void login();
 void showMainMenu();
