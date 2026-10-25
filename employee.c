@@ -209,15 +209,15 @@ void viewEmployees(){
     printf("-\n");
     printf("  \n");
     printf("------------------------------------------------------------------------------------------------\n");
-    printf("   %-18s %-20s %-18s %-14s %-22s\n","ID","Name","Department","Category","Designation");
+    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n","ID","Name","Phone_NO","Department","Category","Designation");
 
     while ( i <= count && fgets(line,sizeof(line),fp)!=NULL){
    
      line[strcspn(line, "\n")] = '\0';
 
-        sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%*[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
+        sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
          
-        printf("   %-18s %-20s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
+        printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
         i++;
 
     }
