@@ -202,3 +202,59 @@ void addEmployee()
     fclose(fp);
     printf("Employee added successfully.\n");
 }
+
+#define EMP_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
+
+int countLines(void) {
+    FILE *fp = fopen(EMP_FILE, "r");
+    if (!fp) return 0;
+    int count = 0;
+    char line[200];
+    while (fgets(line, sizeof line, fp)) count++;
+    fclose(fp);
+    return count;
+}
+
+void viewEmployees() {
+    clearScreen();
+
+    int i = 0;
+    int count = countLines();
+    if (count == 0) {
+        printf("No employees found.\n");
+        getchar();
+        return;
+    }
+
+    struct employee emp[count];
+    FILE *fp;
+    char line[200];
+
+    fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    if (fp == NULL) {
+        printf("Error opening file! Check the folder path.\n");
+        return;
+    }
+
+    printf("\n\t\t\t\t\t\tALL EMPLOYEES\n");
+    printf("=============================================================================================================================================\n");
+    printf("   %-18s %-20s %-18s %-22s %-18s\n", "ID", "Name", "Phone_NO", "Designations", "Department");
+    printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    while (i < count && fgets(line, sizeof(line), fp) != NULL) {
+        line[strcspn(line, "\r\n")] = '\0';
+
+        sscanf(line, "%49[^|]|%49[^|]|%*[^|]|%14[^|]|%29[^|]|%60[^|]",
+               emp[i].emp_id, emp[i].emp_name, emp[i].phone, emp[i].dep, emp[i].depr);
+
+        printf("   %-18s %-20s %-18s %-22s %-18s\n",
+               emp[i].emp_id, emp[i].emp_name, emp[i].phone, emp[i].dep, emp[i].depr);
+        i++;
+    }
+    fclose(fp);
+
+       printf("=============================================================================================================================================\n");
+    printf("Showing 1-%d of %d employees\n", i, count);
+
+    getchar();
+}

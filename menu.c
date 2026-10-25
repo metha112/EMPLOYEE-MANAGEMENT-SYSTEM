@@ -96,7 +96,7 @@ void showEmployeeMenu(){
     }while(1);
 }
 
-void viewEmployees(){ clearScreen(); printf("View Employees\nPress Enter..."); getchar(); }
+
 void searchEmployee(){ clearScreen(); printf("Search\nPress Enter..."); getchar(); }
 void updateEmployee(){ clearScreen(); printf("Update\nPress Enter..."); getchar(); }
 
