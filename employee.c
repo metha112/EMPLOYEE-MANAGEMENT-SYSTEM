@@ -197,19 +197,19 @@ void viewEmployees(){
     struct employee emp[count];
     FILE*fp;
     char line[200];
-    printf("%d",count);
+   
     fp= fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
      if (fp == NULL)
     {
         printf("Error opening file! Check the folder path.\n");
         return;
     }
-    printf("ALL EMPLOYEES\n");
-    printf("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("\nALL EMPLOYEES\n");
+    printf("------------------------------------------------------------------------------------------------\n");
     printf("-\n");
-    printf("   ID \t\t\tName\t\t\t\tDepartment\t\t\t\tCategory\t\t\t\tDesignation\n");
-    printf("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("-\n");
+    printf("  \n");
+    printf("------------------------------------------------------------------------------------------------\n");
+    printf("   %-18s %-20s %-18s %-14s %-22s\n","ID","Name","Department","Category","Designation");
 
     while ( i <= count && fgets(line,sizeof(line),fp)!=NULL){
    
@@ -217,14 +217,14 @@ void viewEmployees(){
 
         sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%*[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
          
-        printf("\n   %s\t%s\t\t\t%s\t\t\t\t\t%s\t\t\t\t%s",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
+        printf("   %-18s %-20s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
         i++;
 
     }
     fclose(fp);
-    printf("\n--------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("\n------------------------------------------------------------------------------------------------\n");
     printf("-\n");
-    printf("Showing 1-%d of %d employees\n",i,i );
+    printf("Showing 1-%d of %d employees\n",i,count);
 
 
 }
