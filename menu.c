@@ -6,7 +6,7 @@
 #include "department.h"
 #include "attendance.h"
 #include "leave.h"
-#include "salary.h"
+
 
 void clearScreen(){
 #ifdef _WIN32
@@ -49,7 +49,7 @@ void showMainMenu(){
                 showLeave();
                 break;
             case 4:
-                 showSalary();
+                salary();
                  break;
             case 5:
                 printf("\nNot implemented yet!\n");
@@ -221,36 +221,4 @@ void viewLeave (){ clearScreen(); printf("View Leave\nPress Enter..."); getchar(
 void approveLeave (){ clearScreen(); printf("Approve Leave\nPress Enter..."); getchar(); }
 void rejectLeave (){ clearScreen(); printf("Reject Leave\nPress Enter..."); getchar(); }
 
-/*salary Management*/
 
-void showSalary(){
-    int choice;
-    do{
-        clearScreen();
-       printf("===============================================\n\n");
-        printf("\t\tSALARY MANAGEMENT\n\n");
-        printf("===============================================\n\n");
-        printf("[1] Basic Salary  \n\n");
-        printf("[2] Allowances  \n\n");
-        printf("[3] Deductions  \n\n");
-        printf("[4] Net Salary  \n\n");
-        printf("[0] Back\n\n");
-        printf("===============================================\n\n");
-        printf("-----------------------------------------------\n");
-        printf("Enter Choice : ");
-        scanf("%d",&choice); getchar();
-        switch(choice){
-            case 1: basicSalary(); break;
-            case 2: allowances(); break;
-            case 3: deductions(); break;
-            case 4: netSalary(); break;
-            case 0: return;
-            default: printf("Invalid!"); getchar();
-        }
-    }while(1);
-}
-
-void basicSalary(){clearScreen(); printf("Apply Leave\nPress Enter..."); getchar();}
-void allowances(){ clearScreen(); printf("View Leave\nPress Enter..."); getchar(); }
-void deductions(){ clearScreen(); printf("Approve Leave\nPress Enter..."); getchar(); }
-void netSalary(){ clearScreen(); printf("Reject Leave\nPress Enter..."); getchar(); }

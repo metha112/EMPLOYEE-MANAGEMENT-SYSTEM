@@ -12,4 +12,6 @@ int  selectDepartment(void);
 void showDepartmentMenuForAttendance(void);
 void showAttendanceMenu(void);
 void clearScreen();
+void salary();
+
 #endif
