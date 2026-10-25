@@ -93,7 +93,7 @@ void apply_leave(){
     
     int x=0,y=0;
     
-    char empid[50],name[50],nic[30],ph[15],position[20],designation[30],dep[30],joint_date[15],username[20],password[20];
+    char empid[50],name[50],nic[30],ph[15],position[30],dep[60],joint_date[15],username[20],password[20];
     
     
 
@@ -109,7 +109,7 @@ void apply_leave(){
         printf("Enter Employee ID: "); 
         scanf("%49s", l1.employeeID);
 
-        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%19[^|]|%29[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^\n]\n",empid,name,nic,ph,position,designation,dep,joint_date,username,password)==10)
+        while (fscanf(file, "%49[^|]|%49[^|]|%29[^|]|%14[^|]|%29[^|]|%59[^|]|%14[^|]|%19[^|]|%19[^\n]\n",empid,name,nic,ph,position,dep,joint_date,username,password)==9)
         {
             if (strcmp(empid, l1.employeeID)==0)
             {
