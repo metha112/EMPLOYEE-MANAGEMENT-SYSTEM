@@ -6,7 +6,7 @@ int main(){
     
 
 
-    //addEmployee();
+    addEmployee();
     viewEmployees();
     return 0;
 }
