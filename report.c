@@ -5,10 +5,12 @@
 #include "report.h"
 
 
-#define EMPLOYEE_FILE   "File_Manegement/employee.txt"
+#define EMPLOYEE_FILE "File_Manegement/employee.txt"
 #define ATTENDANCE_FILE "File_Manegement/attendance.txt"
-#define LEAVE_FILE      "File_Manegement/leave.txt"
-#define SALARY_FILE     "File_Manegement/salary.txt"
+#define LEAVE_FILE "File_Manegement/leave.txt"
+#define SALARY_FILE "File_Manegement/salary.txt"
+#define TEMP_FILE "File_Manegement/temp.txt"
+#define ATTENDANCE_COUNT_FILE "File_Manegement/attendance_count.txt"
 
 #define LINE_SIZE 512
 
