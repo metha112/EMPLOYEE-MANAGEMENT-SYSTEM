@@ -2,6 +2,11 @@
 #include "employee.h"
 
 int main(){
-    addEmployee();
+   
+    
+
+
+    //addEmployee();
+    viewEmployees();
     return 0;
 }

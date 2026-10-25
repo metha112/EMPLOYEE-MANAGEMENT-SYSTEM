@@ -3,6 +3,8 @@
 #include <string.h>
 #include "employee.h"
 
+
+
 struct employee
 {
     char emp_id[50];
@@ -15,10 +17,36 @@ struct employee
     char join_date[15];
     char username[20];
     char password[20];
+   
 };
+int countLines()
+{
+    FILE *fp;
+    char line[300];
+    int lines = 0;
+
+    fp = fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    if (fp == NULL)
+    {
+        return 0;                     
+    }
+
+    while (fgets(line, sizeof(line), fp) != NULL)
+    {
+           
+                lines++;
+        
+    }
+
+    fclose(fp);
+    return lines;                     
+}
+
+
 
 void addEmployee()
 {
+   
     struct employee emp;
     char buffer[20];
     int d, c, des;
@@ -155,6 +183,59 @@ void addEmployee()
             emp.dep, emp.category, emp.designation,
             emp.join_date, emp.username, emp.password);
 
+    
+                   
+               
+
     fclose(fp);
     printf("Employee added successfully.\n");
 }
+
+void viewEmployees(){
+    int i = 0;
+    int count = countLines();
+    struct employee emp[count];
+    FILE*fp;
+    char line[200];
+    printf("%d",count);
+    fp= fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
+     if (fp == NULL)
+    {
+        printf("Error opening file! Check the folder path.\n");
+        return;
+    }
+    printf("ALL EMPLOYEES\n");
+    printf("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-\n");
+    printf("   ID \t\t\tName\t\t\t\tDepartment\t\t\t\tCategory\t\t\t\tDesignation\n");
+    printf("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-\n");
+
+    while ( i <= count && fgets(line,sizeof(line),fp)!=NULL){
+   
+     line[strcspn(line, "\n")] = '\0';
+
+        sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%*[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
+         
+        printf("\n   %s\t%s\t\t\t%s\t\t\t\t\t%s\t\t\t\t%s",emp[i].emp_id,emp[i].emp_name,emp[i].dep,emp[i].category,emp[i].designation);
+        i++;
+
+    }
+    fclose(fp);
+    printf("\n--------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-\n");
+    printf("Showing 1-%d of %d employees\n",i,i );
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
