@@ -3,7 +3,7 @@
 
 int main(){
    
-    addEmployee();
+    //addEmployee();
     searchEmployee();
 
     

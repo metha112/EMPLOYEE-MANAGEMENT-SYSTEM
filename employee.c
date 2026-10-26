@@ -45,6 +45,7 @@ int countLines()
 
 
 void addEmployee()
+
 {
    
     struct employee emp;
@@ -234,21 +235,22 @@ void searchEmployee(){
     struct employee emp[count];
     FILE*fp;
     char line[200];
-    int choice,i,select;
+    int i = 1;
+    int choice,select;
     char search[50];
     char buffer[20];
     do{
         printf("\n================================================================================================\n");
         printf("\t\t\t\t\tSEARCH EMPLOYEE");
         printf("\n================================================================================================\n");
-        printf("-"); 
+        printf("-\n"); 
         printf("1. By Employee ID\n");
         printf("2. By Name\n");  
         printf("3. By NIC\n");
         printf("4. By Department\n");
         printf("0. Back\n");
         printf("\n------------------------------------------------------------------------------------------------\n");
-        printf("-");
+        printf("-\n");
 
         printf("Enter choice:");
         fgets(buffer, sizeof(buffer), stdin);
@@ -292,53 +294,47 @@ void searchEmployee(){
                 printf("Invalid Number\n ");
                 break;
         }
-
+        printf("    %-18s %-20s %-18s %-18s %-14s %-22s\n","ID","Name","Phone_NO","Department","Category","Designation");
         fp= fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
         if (fp == NULL)
         {
             printf("Error opening file! Check the folder path.\n");
             return;
         }
+
          while ( i <= count && fgets(line,sizeof(line),fp)!=NULL){
    
             line[strcspn(line, "\n")] = '\0';
 
-            sscanf(line,"%49[^|]|%49[^|]|%29[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+            sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+           
             switch (select)
             {
             case 1 :
                if (strcmp(search, emp[i].emp_id) == 0)
                 {
-                    printf("%-18s %-20s %-18s %-14s %-22s\n",
-                        emp[i].emp_id, emp[i].emp_name, emp[i].dep,
-                        emp[i].category, emp[i].designation);
+                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 2 :
                if (strcmp(search, emp[i].emp_name) == 0)
                 {
-                    printf("%-18s %-20s %-18s %-14s %-22s\n",
-                        emp[i].emp_id, emp[i].emp_name, emp[i].dep,
-                        emp[i].category, emp[i].designation);
+                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 3 :
                if (strcmp(search, emp[i].nic) == 0)
                 {
-                    printf("%-18s %-20s %-18s %-14s %-22s\n",
-                        emp[i].emp_id, emp[i].emp_name, emp[i].dep,
-                        emp[i].category, emp[i].designation);
+                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 4 :
                if (strcmp(search, emp[i].dep) == 0)
                 {
-                    printf("%-18s %-20s %-18s %-14s %-22s\n",
-                        emp[i].emp_id, emp[i].emp_name, emp[i].dep,
-                        emp[i].category, emp[i].designation);
+                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
