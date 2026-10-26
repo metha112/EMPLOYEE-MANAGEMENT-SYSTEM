@@ -3,10 +3,10 @@
 
 int main(){
    
-    
-
-
     addEmployee();
-    viewEmployees();
+    searchEmployee();
+
+    
+    //viewEmployees();
     return 0;
 }
