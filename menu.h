@@ -13,5 +13,6 @@ void showDepartmentMenuForAttendance(void);
 void showAttendanceMenu(void);
 void clearScreen();
 void salary();
+void reportsMenu();
 
 #endif

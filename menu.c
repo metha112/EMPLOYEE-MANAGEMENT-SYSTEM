@@ -6,6 +6,7 @@
 #include "department.h"
 #include "attendance.h"
 #include "leave.h"
+#include "report.h"
 
 
 void clearScreen(){
@@ -52,9 +53,7 @@ void showMainMenu(){
                 salary();
                  break;
             case 5:
-                printf("\nNot implemented yet!\n");
-                printf("Press Enter...");
-                getchar();
+                reportsMenu();
                 break;
             case 0:
                 login();
