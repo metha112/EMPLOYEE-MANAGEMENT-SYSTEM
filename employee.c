@@ -235,21 +235,21 @@ void searchEmployee(){
     struct employee emp[count];
     FILE*fp;
     char line[200];
-    int i = 1;
+   
     int choice,select;
     char search[50];
     char buffer[20];
     do{
-        printf("\n================================================================================================\n");
-        printf("\t\t\t\t\tSEARCH EMPLOYEE");
-        printf("\n================================================================================================\n");
-        printf("-\n"); 
-        printf("1. By Employee ID\n");
-        printf("2. By Name\n");  
-        printf("3. By NIC\n");
-        printf("4. By Department\n");
-        printf("0. Back\n");
-        printf("\n------------------------------------------------------------------------------------------------\n");
+        int i = 0;
+        printf("+======================================================================================================================+\n");
+        printf("|\t\t\t\t\t\tSEARCH EMPLOYEE\t\t\t\t\t\t\t       |\n");
+        printf("+======================================================================================================================+\n");
+        printf("|1. By Employee ID\t\t\t\t\t\t\t\t\t\t\t\t       |\n");
+        printf("|2. By Name\t\t\t\t\t\t\t\t\t\t\t\t\t       |\n");  
+        printf("|3. By NIC\t\t\t\t\t\t\t\t\t\t\t\t\t       |\n");
+        printf("|4. By Department\t\t\t\t\t\t\t\t\t\t\t\t       |\n");
+        printf("|0. Back\t\t\t\t\t\t\t\t\t\t\t\t\t       |\n");
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
         printf("-\n");
 
         printf("Enter choice:");
@@ -294,7 +294,8 @@ void searchEmployee(){
                 printf("Invalid Number\n ");
                 break;
         }
-        printf("    %-18s %-20s %-18s %-18s %-14s %-22s\n","ID","Name","Phone_NO","Department","Category","Designation");
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
+        printf("|   %-18s %-20s %-18s %-18s %-14s %-22s|\n","ID","Name","Phone_NO","Department","Category","Designation");
         fp= fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
         if (fp == NULL)
         {
@@ -306,35 +307,35 @@ void searchEmployee(){
    
             line[strcspn(line, "\n")] = '\0';
 
-            sscanf(line,"%49[^|]|%49[^|]|%*[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+            sscanf(line,"%49[^|]|%49[^|]|%29[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]",emp[i].emp_id,emp[i].emp_name,emp[i].nic,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
            
             switch (select)
             {
             case 1 :
-               if (strcmp(search, emp[i].emp_id) == 0)
+               if (strstr(emp[i].emp_id, search) != NULL)
                 {
-                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+                    printf("|   %-18s %-20s %-18s %-18s %-14s %-22s|\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 2 :
-               if (strcmp(search, emp[i].emp_name) == 0)
+               if (strstr(emp[i].emp_name, search) != NULL)
                 {
-                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+                    printf("|   %-18s %-20s %-18s %-18s %-14s %-22s|\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 3 :
                if (strcmp(search, emp[i].nic) == 0)
                 {
-                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+                    printf("|   %-18s %-20s %-18s %-18s %-14s %-22s|\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
             case 4 :
-               if (strcmp(search, emp[i].dep) == 0)
+               if (strstr(emp[i].dep, search) != NULL)
                 {
-                    printf("   %-18s %-20s %-18s %-18s %-14s %-22s\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
+                    printf("|   %-18s %-20s %-18s %-18s %-14s %-22s|\n",emp[i].emp_id,emp[i].emp_name,emp[i].phone,emp[i].dep,emp[i].category,emp[i].designation);
                     //found++;
                 }
                 break;
@@ -345,10 +346,12 @@ void searchEmployee(){
             i++;
 
         }
+        fclose(fp);
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
     }while (choice!=0);
    
-    fclose(fp);
-    printf("\n================================================================================================\n");
+    
+   
     printf("-\n");
 
 
