@@ -132,10 +132,15 @@ void generateAttendanceReport(void)
 
 /* 3. Leave Report */
 
+
 void generateLeaveReport(void)
 {
-    FILE *file = fopen("C:\\Users\\New\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
-    char line[LINE_SIZE];
+    FILE *file = fopen(TEMP_FILE, "r");
+
+    char employeeID[100];
+    char leaveType[50];
+    char status[50];
+    int days;
 
     int count = 0;
     int approvedCount = 0;
@@ -144,45 +149,31 @@ void generateLeaveReport(void)
 
     if (file == NULL)
     {
-        printf("\nCannot open leave.txt\n");
+        printf("\nCannot open temp.txt\n");
         return;
     }
 
     printHeader("LEAVE REPORT");
 
-    printf("%-10s %-12s %-15s %-15s %-12s\n",
-           "LEAVE ID", "EMPLOYEE ID",
-           "START DATE", "END DATE", "STATUS");
+    printf("%-24s %-15s %-10s %-12s\n",
+           "EMPLOYEE ID", "LEAVE TYPE", "DAYS", "STATUS");
 
     printf("--------------------------------------------------------------------------\n");
 
-    while (fgets(line, sizeof(line), file) != NULL)
-    {   
-        printf(" %s", line);
+    while (fscanf(file, "%99s %49s %d %49s",
+                  employeeID, leaveType, &days, status) == 4)
+    {
+        printf("%-24s %-15s %-10d %-12s\n",
+               employeeID, leaveType, days, status);
 
-        char *leaveID = strtok(line, "|\r\n");
-        char *employeeID = strtok(NULL, "|\r\n");
-        char *startDate = strtok(NULL, "|\r\n");
-        char *endDate = strtok(NULL, "|\r\n");
-        char *status = strtok(NULL, "|\r\n");
+        count++;
 
-        if (leaveID != NULL && employeeID != NULL &&
-            startDate != NULL && endDate != NULL &&
-            status != NULL)
-        {
-            printf("%-10s %-12s %-15s %-15s %-12s\n",
-                   leaveID, employeeID,
-                   startDate, endDate, status);
-
-            count++;
-
-            if (strcmp(status, "Approved") == 0)
-                approvedCount++;
-            else if (strcmp(status, "Pending") == 0)
-                pendingCount++;
-            else if (strcmp(status, "Rejected") == 0)
-                rejectedCount++;
-        }
+        if (strcmp(status, "Approved") == 0)
+            approvedCount++;
+        else if (strcmp(status, "Pending") == 0)
+            pendingCount++;
+        else if (strcmp(status, "Rejected") == 0)
+            rejectedCount++;
     }
 
     printf("--------------------------------------------------------------------------\n");
@@ -195,72 +186,152 @@ void generateLeaveReport(void)
 }
 
 
-/* 4. Salary Report */
 
 /* 4. Salary Report */
+
+/* Identify category from employee position */
+static const char *getSalaryCategory(const char *position)
+{
+    if (strcmp(position, "Lecturer") == 0 ||
+        strcmp(position, "Professor") == 0 ||
+        strcmp(position, "professor") == 0 ||
+        strcmp(position, "Demonstrator") == 0 ||
+        strcmp(position, "Senior Lecturer") == 0)
+        return "Academic";
+
+    if (strcmp(position, "Technician") == 0 ||
+        strcmp(position, "Technical Officer") == 0 ||
+        strcmp(position, "Engineer") == 0)
+        return "Technical";
+
+    return "Non-academic";
+}
+
 void generateSalaryReport(void)
 {
-    FILE *file = fopen(SALARY_FILE, "r");
-    char line[LINE_SIZE];
-
+    char ids[500][100];
+    char categories[500][30];
+    double salaries[500] = {0};
+    int hasSalary[500] = {0};
     int count = 0;
-    double totalBasic = 0.0;
-    double totalAllowances = 0.0;
-    double totalDeductions = 0.0;
-    double totalNet = 0.0;
+    int i, j;
+    char line[LINE_SIZE];
+    char salaryID[100];
+    double salary;
 
-    if (file == NULL)
+    int academicCount = 0, technicalCount = 0, nonAcademicCount = 0;
+    double academicTotal = 0, technicalTotal = 0, nonAcademicTotal = 0;
+
+    FILE *empFile = fopen(EMPLOYEE_FILE, "r");
+
+    if (empFile == NULL)
     {
-        printf("\nCannot open salary.txt\n");
+        printf("Cannot open employee.txt\n");
         return;
     }
 
-    printHeader("SALARY REPORT");
-
-    printf("%-10s %-15s %-15s %-15s %-15s\n",
-           "ID", "BASIC", "ALLOWANCES",
-           "DEDUCTIONS", "NET SALARY");
-
-    printf("--------------------------------------------------------------------------\n");
-
-    while (fgets(line, sizeof(line), file) != NULL)
+    /* employee.txt:
+       ID|Name|NIC|Phone|Position|Department|Date|Username|Password
+    */
+    while (fgets(line, sizeof(line), empFile) != NULL && count < 500)
     {
         char *id = strtok(line, "|\r\n");
-        char *basic = strtok(NULL, "|\r\n");
-        char *allowance = strtok(NULL, "|\r\n");
-        char *deduction = strtok(NULL, "|\r\n");
-        char *net = strtok(NULL, "|\r\n");
+        char *name = strtok(NULL, "|\r\n");
+        char *nic = strtok(NULL, "|\r\n");
+        char *phone = strtok(NULL, "|\r\n");
+        char *position = strtok(NULL, "|\r\n");
 
-        if (id != NULL && basic != NULL &&
-            allowance != NULL && deduction != NULL &&
-            net != NULL)
+        if (id == NULL || name == NULL || nic == NULL ||
+            phone == NULL || position == NULL)
+            continue;
+
+        /* Avoid duplicate employee IDs */
+        for (i = 0; i < count; i++)
+            if (strcmp(ids[i], id) == 0)
+                break;
+
+        if (i != count)
+            continue;
+
+        snprintf(ids[count], sizeof(ids[count]), "%s", id);
+        snprintf(categories[count], sizeof(categories[count]),
+                 "%s", getSalaryCategory(position));
+        count++;
+    }
+
+    fclose(empFile);
+
+    /* salary.txt format: EmployeeID Salary */
+    FILE *salFile = fopen(SALARY_FILE, "r");
+
+    if (salFile == NULL)
+    {
+        printf("Cannot open salary.txt\n");
+        return;
+    }
+
+    while (fscanf(salFile, "%99s %lf", salaryID, &salary) == 2)
+    {
+        for (i = 0; i < count; i++)
         {
-            double basicSalary = atof(basic);
-            double allowanceAmount = atof(allowance);
-            double deductionAmount = atof(deduction);
-            double netSalary = atof(net);
-
-            printf("%-10s %-15.2f %-15.2f %-15.2f %-15.2f\n",
-                   id, basicSalary, allowanceAmount,
-                   deductionAmount, netSalary);
-
-            totalBasic += basicSalary;
-            totalAllowances += allowanceAmount;
-            totalDeductions += deductionAmount;
-            totalNet += netSalary;
-            count++;
+            if (strcmp(ids[i], salaryID) == 0)
+            {
+                salaries[i] = salary;
+                hasSalary[i] = 1;
+                break;
+            }
         }
     }
 
-    printf("--------------------------------------------------------------------------\n");
-    printf("Total Salary Records: %d\n", count);
-    printf("Total Basic Salary: Rs. %.2f\n", totalBasic);
-    printf("Total Allowances: Rs. %.2f\n", totalAllowances);
-    printf("Total Deductions: Rs. %.2f\n", totalDeductions);
-    printf("Combined Net Salary: Rs. %.2f\n", totalNet);
+    fclose(salFile);
 
-    fclose(file);
+    /* Calculate category totals using employees with salaries */
+    for (i = 0; i < count; i++)
+    {
+        if (!hasSalary[i])
+            continue;
+
+        if (strcmp(categories[i], "Academic") == 0)
+        {
+            academicCount++;
+            academicTotal += salaries[i];
+        }
+        else if (strcmp(categories[i], "Technical") == 0)
+        {
+            technicalCount++;
+            technicalTotal += salaries[i];
+        }
+        else
+        {
+            nonAcademicCount++;
+            nonAcademicTotal += salaries[i];
+        }
+    }
+
+    printHeader("REPORT - EMPLOYEES BY CATEGORY");
+
+    printf("%-18s %-12s %-20s %-20s\n",
+           "Category", "Employees", "Total Salary", "Average Salary");
+    printf("--------------------------------------------------------------------------\n");
+
+    printf("%-18s %-12d Rs. %12.2f Rs. %12.2f\n",
+           "Academic", academicCount, academicTotal,
+           academicCount ? academicTotal / academicCount : 0.0);
+
+    printf("%-18s %-12d Rs. %12.2f Rs. %12.2f\n",
+           "Technical", technicalCount, technicalTotal,
+           technicalCount ? technicalTotal / technicalCount : 0.0);
+
+    printf("%-18s %-12d Rs. %12.2f Rs. %12.2f\n",
+           "Non-academic", nonAcademicCount, nonAcademicTotal,
+           nonAcademicCount ? nonAcademicTotal / nonAcademicCount : 0.0);
+
+    printf("--------------------------------------------------------------------------\n");
+    printf("Total employees: %d\n",
+           academicCount + technicalCount + nonAcademicCount);
 }
+
+
 
 /* Reports Menu */
 void reportsMenu(void)
