@@ -4,8 +4,8 @@
 int main(){
    
     //addEmployee();
-    searchEmployee();
-
+    //searchEmployee();
+      updateEmployee();
     
     //viewEmployees();
     return 0;

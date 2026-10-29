@@ -358,6 +358,146 @@ void searchEmployee(){
 }
 
 
+void updateEmployee(){
+
+    int count = countLines();
+    if (count == 0)
+    {
+        printf("No employees found.\n");
+        return;
+    }
+
+    struct employee emp[count];
+    FILE*fp;
+    char line[300];
+    int choice;
+    char change[50];
+    char buffer[20];
+    char login[20];
+    strcpy(login,"001");
+
+    do{
+        int i = 0;
+        int j = 0;
+        int pos = -1;                    
+        
+        fp = fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt","r");
+        if (fp == NULL)
+        {
+            printf("Error opening file! Check the folder path.\n");
+            return;
+        }
+
+        while ( i < count && fgets(line,sizeof(line),fp)!=NULL){
+
+            line[strcspn(line, "\n")] = '\0';
+            if (line[0] == '\0') continue;
+
+            memset(&emp[i], 0, sizeof(emp[i]));
+            if (sscanf(line,"%49[^|]|%49[^|]|%29[^|]|%14[^|]|%29[^|]|%19[^|]|%29[^|]|%14[^|]|%19[^|]|%19[^|]",
+                       emp[i].emp_id,emp[i].emp_name,emp[i].nic,emp[i].phone,
+                       emp[i].dep,emp[i].category,emp[i].designation,
+                       emp[i].join_date,emp[i].username,emp[i].password) != 10)
+            {
+                continue;                
+            }
+
+            if (strcmp(emp[i].emp_id, login) == 0){
+                pos = i;                 
+            }
+            i++;                         
+        }
+        fclose(fp);
+
+        if (pos == -1)
+        {
+            printf("Employee %s not found.\n", login);
+            return;
+        }
+
+        
+        printf("Employee ID : %s (Cannot be changed)\n",emp[pos].emp_id);
+
+        printf("   1. Full Name       : %s\n",emp[pos].emp_name);
+        printf("   2. NIC             : %s\n",emp[pos].nic);
+        printf("   3. Phone           : %s\n",emp[pos].phone);
+        printf("   4. Department      : %s\n",emp[pos].dep);
+        printf("   5. Category        : %s\n",emp[pos].category);
+        printf("   6. Designation     : %s\n",emp[pos].designation);
+        printf("   7. Join Date       : %s\n",emp[pos].join_date);
+        printf("   8. Password        : %s\n",emp[pos].password);
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
+        printf("   0. Discard changes and go back\n");
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
+        printf("Enter choice:");
+        fgets(buffer, sizeof(buffer), stdin);
+        choice = atoi(buffer);
+
+        change[0] = '\0';
+        if (choice >= 1 && choice <= 8)
+        {
+            printf("Enter New Value: ");
+            fgets(change, sizeof(change), stdin);
+            change[strcspn(change, "\n")] = '\0';
+        }
+
+        switch (choice)
+        {
+            case 1 : snprintf(emp[pos].emp_name,    sizeof(emp[pos].emp_name),    "%s", change); break;
+            case 2 : snprintf(emp[pos].nic,         sizeof(emp[pos].nic),         "%s", change); break;
+            case 3 : snprintf(emp[pos].phone,       sizeof(emp[pos].phone),       "%s", change); break;
+            case 4 : snprintf(emp[pos].dep,         sizeof(emp[pos].dep),         "%s", change); break;
+            case 5 : snprintf(emp[pos].category,    sizeof(emp[pos].category),    "%s", change); break;
+            case 6 : snprintf(emp[pos].designation, sizeof(emp[pos].designation), "%s", change); break;
+            case 7 : snprintf(emp[pos].join_date,   sizeof(emp[pos].join_date),   "%s", change); break;
+            case 8 : snprintf(emp[pos].password,    sizeof(emp[pos].password),    "%s", change); break;
+            case 0 :
+                printf("Back\n");
+                break;
+            default:
+                printf("Invalid Number\n");
+                break;
+        }
+
+       
+        if (choice >= 1 && choice <= 8)
+        {
+            fp = fopen("C:\\Users\\USER\\Documents\\GitHub\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "w");
+            if (fp == NULL)
+            {
+                printf("Error opening file! Check the folder path.\n");
+                return;
+            }
+
+            while ( j < i ){
+                fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n",
+                    emp[j].emp_id, emp[j].emp_name, emp[j].nic, emp[j].phone,
+                    emp[j].dep, emp[j].category, emp[j].designation,
+                    emp[j].join_date, emp[j].username, emp[j].password);
+                j++;
+            }
+
+            fclose(fp);
+            printf("Save Change...\n");
+        }
+
+        printf("+----------------------------------------------------------------------------------------------------------------------+\n");
+        printf("\n");
+
+    }while (choice != 0);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
