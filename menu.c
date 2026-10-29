@@ -96,10 +96,6 @@ void showEmployeeMenu(){
 }
 
 
-void searchEmployee(){ clearScreen(); printf("Search\nPress Enter..."); getchar(); }
-void updateEmployee(){ clearScreen(); printf("Update\nPress Enter..."); getchar(); }
-
-
 char departments[5][100] = {
     "Department of Engineering Technology",
     "Department of Information and Communication Technology",
