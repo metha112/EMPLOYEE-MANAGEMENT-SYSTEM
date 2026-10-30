@@ -1,0 +1,16 @@
+
+==================================================================
+  FACULTY OF TECHNOLOGY - UNIVERSITY OF RUHUNA
+  LEAVE REPORT
+==================================================================
+No  Employee ID      Name            Leave Type  Days   Status    
+------------------------------------------------------------------
+1   TG/IT/2025/2517  Methsara        Annual      6      Pending   
+2   TG/IT/2025/2517  Methsara        Annual      9      Pending   
+3   TG/IT/2025/2517  Methsara        Medical     2      Pending   
+4   TG/IT/2025/2517  Methsara        Annual      2      Pending   
+5   TG/ET/2025/2546  amal            Annual      2      Pending   
+------------------------------------------------------------------
+Total records : 5
+Total leave days: 21
+==================================================================

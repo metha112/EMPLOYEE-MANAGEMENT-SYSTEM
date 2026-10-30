@@ -53,7 +53,7 @@ void showMainMenu(){
                 salary();
                  break;
             case 5:
-                reportsMenu();
+                report_menu();
                 break;
             case 0:
                 login();
@@ -209,11 +209,5 @@ void showLeave(){
         }
     }while(1);
 }
-
-
-void applyLeave (){clearScreen(); printf("Apply Leave\nPress Enter..."); getchar();}
-void viewLeave (){ clearScreen(); printf("View Leave\nPress Enter..."); getchar(); }
-void approveLeave (){ clearScreen(); printf("Approve Leave\nPress Enter..."); getchar(); }
-void rejectLeave (){ clearScreen(); printf("Reject Leave\nPress Enter..."); getchar(); }
 
 
