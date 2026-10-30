@@ -409,19 +409,19 @@ void updateEmployee(){
 
             char *f[10] = {0};
             int n = splitFields(line, f, 10);
-            if (n < 6) continue;      // really broken line
+            if (n < 6) continue;
 
-            // file order: id | name | nic | phone | designation | department | category(hidden) | join_date | username | password
+            // REAL file order:
+            // id | name | nic | phone | designation | department | join_date | username | password
             snprintf(emp[i].emp_id,      sizeof(emp[i].emp_id),      "%s", f[0]);
             snprintf(emp[i].emp_name,    sizeof(emp[i].emp_name),    "%s", f[1]);
             snprintf(emp[i].nic,         sizeof(emp[i].nic),         "%s", f[2]);
             snprintf(emp[i].phone,       sizeof(emp[i].phone),       "%s", f[3]);
             snprintf(emp[i].designation, sizeof(emp[i].designation), "%s", f[4]);
             snprintf(emp[i].dep,         sizeof(emp[i].dep),         "%s", f[5]);
-            snprintf(emp[i].category,    sizeof(emp[i].category),    "%s", n > 6 ? f[6] : "");
-            snprintf(emp[i].join_date,   sizeof(emp[i].join_date),   "%s", n > 7 ? f[7] : "");
-            snprintf(emp[i].username,    sizeof(emp[i].username),    "%s", n > 8 ? f[8] : "");
-            snprintf(emp[i].password,    sizeof(emp[i].password),    "%s", n > 9 ? f[9] : "");
+            snprintf(emp[i].join_date,   sizeof(emp[i].join_date),   "%s", n > 6 ? f[6] : "");
+            snprintf(emp[i].username,    sizeof(emp[i].username),    "%s", n > 7 ? f[7] : "");
+            snprintf(emp[i].password,    sizeof(emp[i].password),    "%s", n > 8 ? f[8] : "");
 
             if (strcmp(emp[i].emp_id, login) == 0){
                 pos = i;
@@ -487,10 +487,10 @@ void updateEmployee(){
             }
 
             while (j < i){
-                // same file order as when reading
-                fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n",
+                // same order as the file: password is the 9th field, last one
+                fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s|%s\n",
                         emp[j].emp_id, emp[j].emp_name, emp[j].nic, emp[j].phone,
-                        emp[j].designation, emp[j].dep, emp[j].category,
+                        emp[j].designation, emp[j].dep,
                         emp[j].join_date, emp[j].username, emp[j].password);
                 j++;
             }
@@ -503,5 +503,5 @@ void updateEmployee(){
         printf("\n");
 
     } while (choice != 0);
-     getchar();
+    getchar();
 }
