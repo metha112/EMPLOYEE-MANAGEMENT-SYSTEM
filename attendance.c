@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 #include "attendance.h"
-#include "attendance_count.h"   /* <-- ADD KALA */
+#include "attendance_count.h"
 #include "menu.h"
 
 #define EMP_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
@@ -125,6 +126,63 @@ static void attPrintRec(const AttRec *r) {
     printf("%-16s %-24s %-12s %-10s %s\n", r->id, r->name, r->date, r->status, r->time);
 }
 
+/* ================= ID helpers (number only -> RT + number) ================= */
+
+static int allDigits(const char *s) {
+    if (*s == '\0') return 0;
+    for (; *s; s++)
+        if (!isdigit((unsigned char)*s)) return 0;
+    return 1;
+}
+
+static void normalizeId(char *id) {
+    for (int i = 0; id[i]; i++) id[i] = (char)toupper((unsigned char)id[i]);
+}
+
+/* Full ID ("RT2546") hari, number witharak ("2546") hari hoyanawa.
+   Hambunoth id[] eka full ID ekata wenas karanawa. */
+static int resolveEmployee(char *id, int idSize,
+                           char *name, int nameSize,
+                           char *dept, int deptSize) {
+    normalizeId(id);
+
+    /* 1. type karapu widihatama (001, 200546, TG/IT/... walata) */
+    if (attFindEmployee(id, name, nameSize, dept, deptSize)) return 1;
+
+    /* 2. digits witharak nam RT + number */
+    if (allDigits(id)) {
+        char alt[50];
+        snprintf(alt, sizeof alt, "RT%s", id);
+        if (attFindEmployee(alt, name, nameSize, dept, deptSize)) {
+            snprintf(id, idSize, "%s", alt);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* ================= Employee type (ID prefix eken) ================= */
+
+typedef struct {
+    const char *prefix;
+    const char *type;
+} IdType;
+
+/* Lamba prefix palaweni thiyanna (RTA kiyana eka RT walata kalin) */
+static const IdType idTypes[] = {
+    {"TG/", "Academic Staff"},
+    {"RT",  "Non-Academic Staff"},
+    {NULL,  NULL}
+};
+
+static const char *getEmployeeType(const char *id) {
+    for (int i = 0; idTypes[i].prefix != NULL; i++) {
+        if (strncmp(id, idTypes[i].prefix, strlen(idTypes[i].prefix)) == 0)
+            return idTypes[i].type;
+    }
+    return "Other";   /* 001, 200546 wage prefix nathi ewata */
+}
+
 /* ================= 1. Mark Attendance ================= */
 
 void markAttendance(void) {
@@ -134,10 +192,10 @@ void markAttendance(void) {
     clearScreen();
     attHeader("MARK ATTENDANCE");
 
-    attReadLine("Employee ID : ", id, sizeof id);
+    attReadLine("Employee ID (e.g. 2546 or RT2546) : ", id, sizeof id);
     if (id[0] == '\0') { printf("\nEmployee ID empty!"); attPause(); return; }
 
-    if (!attFindEmployee(id, name, sizeof name, dept, sizeof dept)) {
+    if (!resolveEmployee(id, sizeof id, name, sizeof name, dept, sizeof dept)) {
         printf("\nEmployee not found!");
         attPause();
         return;
@@ -147,7 +205,10 @@ void markAttendance(void) {
         attPause();
         return;
     }
-    printf("Name        : %s\n\n", name);
+
+    printf("Employee ID : %s\n", id);
+    printf("Name        : %s\n", name);
+    printf("Type        : %s\n\n", getEmployeeType(id));
 
     attNow(today, tm);
     attReadLine("Date (YYYY-MM-DD, Enter = today) : ", date, sizeof date);
@@ -172,9 +233,10 @@ void markAttendance(void) {
     fprintf(fp, "%s|%s|%s|%s|%s|%s\n", id, name, dept, date, statuses[s], timeStr);
     fclose(fp);
 
-    update_attendance_count();   /* <-- METHANA: fclose ekata passe */
+    update_attendance_count();
 
-    printf("\nAttendance marked: %s - %s (%s)", name, statuses[s], date);
+    printf("\nAttendance marked: %s (%s) - %s (%s)",
+           name, getEmployeeType(id), statuses[s], date);
     attPause();
 }
 

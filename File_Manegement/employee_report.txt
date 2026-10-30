@@ -12,7 +12,8 @@ No  Employee ID     Name           NIC            Phone       Designation Dept  
 5   TG/IT/2025/2514 Isum           123654897      23654687    Lecturer    ET    10/25/2025 
 6   TG/ET/2025/2546 amal           2005466700     0714567345  professor   ET    28/10/2026 
 7   RT2546          Methsara.A     12365897456    369875641   profesor    ICT   30/10/2026 
-8   RT2545          A.M.awishka    1236549        4569872     Lecturer    ET    30/10/2026 
+8   -               A.M.awishka    1236549        4569872     Lecturer    ET    30/10/2026 
+9   RT2555          K.L.kamal      123654987      23654789    Senior Lect ICT   31-10-2026 
 -------------------------------------------------------------------------------------------
-Total records : 8
+Total records : 9
 ===========================================================================================

@@ -10,7 +10,8 @@ No  Employee ID      Name            Leave Type  Days   Status
 3   TG/IT/2025/2517  Methsara        Medical     2      Pending   
 4   TG/IT/2025/2517  Methsara        Annual      2      Pending   
 5   TG/ET/2025/2546  amal            Annual      2      Pending   
+6   RT2555           K.L.kamal       Annual      2      Pending   
 ------------------------------------------------------------------
-Total records : 5
-Total leave days: 21
+Total records : 6
+Total leave days: 23
 ==================================================================

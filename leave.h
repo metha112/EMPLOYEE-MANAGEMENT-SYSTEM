@@ -14,4 +14,5 @@ void apply_leave();
 void view_leave();
 void approve_leave();
 void reject_leave();
+void clearScreen();
 #endif

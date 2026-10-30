@@ -15,9 +15,10 @@ No  Employee ID      Name            Amount
 8   TG/IT/2025/2511  Kamal           10000.00      
 9   TG/IT/2025/2517  Methsara        15000.00      
 10  TG/ET/2025/2546  amal            10000.00      
+11  RT2555           K.L.kamal       9000.00       
 ---------------------------------------------------
-Total records : 10
-Total salary    : 137000.00
+Total records : 11
+Total salary    : 146000.00
 
   SALARY SUMMARY (total per employee)
 ----------------------------------------------------------------
@@ -27,7 +28,8 @@ No  Employee ID      Name            Payments  Total Salary
 2   TG/IT/2025/2514  Isum            1         7000.00       
 3   TG/IT/2025/2511  Kamal           4         60000.00      
 4   TG/ET/2025/2546  amal            1         10000.00      
+5   RT2555           K.L.kamal       1         9000.00       
 ----------------------------------------------------------------
-Total employees : 4
-Grand total     : 137000.00
+Total employees : 5
+Grand total     : 146000.00
 ================================================================

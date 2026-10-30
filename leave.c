@@ -1,9 +1,36 @@
 #include<stdio.h>
 #include<string.h>
+#include<conio.h>
+#include<ctype.h>
 #include "leave.h"
 #include "menu.h"
 
+/* Password eka type karaddi "*" pennanawa. Backspace support karanawa. */
+static void readPassword(char *buf, int size) {
+    int i = 0;
+    int ch;
+
+    while ((ch = getch()) != '\r' && ch != '\n') {
+        if (ch == 0 || ch == 224) {      /* arrow / function keys skip */
+            getch();
+            continue;
+        }
+        if (ch == '\b') {                /* backspace */
+            if (i > 0) {
+                i--;
+                printf("\b \b");
+            }
+        } else if (i < size - 1 && isprint(ch)) {
+            buf[i++] = (char)ch;
+            printf("*");
+        }
+    }
+    buf[i] = '\0';
+    printf("\n");
+}
+
 void apply_leave(){
+    clearScreen();
     int choice;
     struct Leave l1;
 
@@ -80,6 +107,8 @@ void apply_leave(){
     int c; while ((c = getchar()) != '\n' && c != EOF);   // buffer eka clear karanna
 }
 void view_leave(){
+
+    clearScreen();
    
     FILE *file;
     struct Leave l1;
@@ -120,12 +149,13 @@ void view_leave(){
 
 void approve_leave()
 {
-    int password;
+    clearScreen();
+    char password[20];
 
     printf("Enter your data entry password: ");
-    scanf("%d", &password);
+    readPassword(password, sizeof password);
 
-    if (password != 123456)
+    if (strcmp(password, "123456") != 0)
     {
         printf("Invalid entry password!\n");
         return;
@@ -227,12 +257,13 @@ void approve_leave()
 
 void reject_leave()
 {
-    int password;
+    clearScreen();
+    char password[20];
 
     printf("Enter your data entry password: ");
-    scanf("%d", &password);
+    readPassword(password, sizeof password);
 
-    if (password != 123456)
+    if (strcmp(password, "123456") != 0)
     {
         printf("Invalid entry password!\n");
         return;

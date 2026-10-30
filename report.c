@@ -211,6 +211,7 @@ static void print_table(FILE *out, const char *inFile, char delim,
 
 void attendance_report(void)
 {
+    clearScreen();
     const Column cols[] = {
         { "Employee ID", 0, 17, COL_TEXT },
         { "Name",        1, 16, COL_TEXT },
@@ -231,6 +232,7 @@ void attendance_report(void)
 
 void employee_report(void)
 {
+    clearScreen();
     const Column cols[] = {
         { "Employee ID", 0, 16, COL_TEXT },
         { "Name",        1, 15, COL_TEXT },
@@ -252,6 +254,7 @@ void employee_report(void)
 
 void leave_report(void)
 {
+    clearScreen();
     const Column cols[] = {
         { "Employee ID", 0, 17, COL_TEXT },
         { "Name",        FIELD_NAME_LOOKUP, 16, COL_TEXT },
@@ -326,6 +329,7 @@ static void salary_summary(FILE *out, int width)
 
 void salary_report(void)
 {
+    clearScreen();
     const Column cols[] = {
         { "Employee ID", 0, 17, COL_TEXT },
         { "Name",        FIELD_NAME_LOOKUP, 16, COL_TEXT },
@@ -344,6 +348,7 @@ void salary_report(void)
 
 void report_menu(void)
 {
+    clearScreen();
     int choice;
     char buf[32];
 

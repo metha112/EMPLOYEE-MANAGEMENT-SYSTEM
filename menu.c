@@ -76,19 +76,17 @@ void showEmployeeMenu(){
         printf("\t\tEMPLOYEE MANAGEMENT MODULE");
         printf("\n\n");
         printf("================================================================\n\n");
-        printf("[1] Add Employee\n\n");
-        printf("[2] View Employees\n\n");
-        printf("[3] Search\n\n");
-        printf("[4] Update\n\n");
+        printf("[1] View Employees\n\n");
+        printf("[2] Search\n\n");
+        printf("[3] Update\n\n");
         printf("[0] Back\n\n");
         printf("----------------------------------------------------------------\n");
         printf("Enter Choice : ");
         scanf("%d",&choice); getchar();
         switch(choice){
-            case 1: addEmployee(); break;
-            case 2: viewEmployees(); break;
-            case 3: searchEmployee(); break;
-            case 4: updateEmployee(); break;
+            case 1: viewEmployees(); break;
+            case 2: searchEmployee(); break;
+            case 3: updateEmployee(); break;
             case 0: return;
             default: printf("Invalid!"); getchar();
         }
@@ -155,7 +153,7 @@ void showAttendanceMenu(void) {
         printf("[0] Back\n\n");
         printf("===============================================\n\n");
         printf("Example (after selecting an option):\n\n");
-        printf("Employee ID : TG/IT/2025/2517\n\n");
+        printf("Employee ID : RTxxxx\n\n");
         printf("Date : 2026-10-08\n\n");
         printf("-----------------------------------------------\n");
         readLine("Enter Choice : ", buf, sizeof buf);

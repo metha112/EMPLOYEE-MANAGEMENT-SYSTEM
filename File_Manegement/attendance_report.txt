@@ -11,6 +11,7 @@ No  Employee ID      Name            Dept  Date        Status   Time
 4   TG/IT/2025/2514  Isum            ET    2026-10-25  Present  00:14  
 5   TG/IT/2025/2511  Kamal           None  2026-10-27  Present  16:50  
 6   TG/ET/2025/2546  amal            ET    2026-10-27  Present  19:26  
+7   RT2555           K.L.kamal       ICT   2026-10-31  Present  01:45  
 -----------------------------------------------------------------------
-Total records : 6
+Total records : 7
 =======================================================================

@@ -13,10 +13,11 @@
 #define LEAVE_REPORT_FILE       "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave_report.txt"
 #define SALARY_REPORT_FILE      "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\salary_report.txt"
 
-void employee_report(void);    /* employee.txt   -> employee_report.txt   */
-void attendance_report(void);  /* attendance.txt -> attendance_report.txt */
-void leave_report(void);       /* leave.txt      -> leave_report.txt      */
-void salary_report(void);      /* salary.txt     -> salary_report.txt     */
-void report_menu(void);        /* simple menu to pick a report            */
+void employee_report(void);    
+void attendance_report(void);  
+void leave_report(void);      
+void salary_report(void);     
+void report_menu(void);   
+void clearScreen();     
 
 #endif
