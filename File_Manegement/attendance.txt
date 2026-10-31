@@ -5,3 +5,5 @@ TG/IT/2025/2514|Isum|Department of Engineering Technology|2026-10-25|Present|00:
 TG/IT/2025/2511|Kamal|None Dipartment|2026-10-27|Present|16:50
 TG/ET/2025/2546|amal|Department of Engineering Technology|2026-10-27|Present|19:26
 RT2555|K.L.kamal|Department of Information and Communication Technology|2026-10-31|Present|01:45
+RT1236|kasun|Department of Engineering Technology|2026-10-31|Present|21:36
+RT1236|kasun|Department of Engineering Technology|2026-10-30|Present|21:42

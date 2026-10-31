@@ -6,5 +6,7 @@ TG/IT/2025/2514|Isum|123654897|23654687|Lecturer|Department of Engineering Tec|1
 TG/ET/2025/2546|amal|2005466700|0714567345|professor|Department of Engineering Tec|28/10/2026|TG/ET/2025/254|123
 RT2546|Methsara.A|12365897456|369875641|profesor|information and comunication |30/10/2026|RT2546|1234
 |A.M.awishka|1236549|4569872|Lecturer|Department of Engineering Tec|30/10/2026|RT2545|1234567
-RT2555|K.L.kamal|123654987|23654789|Senior Lecturer|Department of Information and Communication Technology|31-10-2026|RT2555|123
+RT2555|K.L.kamal|123654987|23654789|Senior Lecturer|Department of Information and|31-10-2026|RT2555|123
 RT2556|Akila|321456987|23654987|professor|None Dipartment|31/10/2026|RT2556|123
+RT1235|Methsara|6598743621|23654789|Senior Lecturer|Department of Engineering Tec|31/10/2026|RT1235|12345
+RT1236|kasun|326223|4|Senior Lecturer|Department of Engineering Technology|31/10/2026|RT1236|123

@@ -11,7 +11,9 @@ No  Employee ID      Name            Leave Type  Days   Status
 4   TG/IT/2025/2517  Methsara        Annual      2      Pending   
 5   TG/ET/2025/2546  amal            Annual      2      Pending   
 6   RT2555           K.L.kamal       Annual      2      Pending   
+7   RT2556           Akila           Medical     1      Pending   
+8   RT1236           kasun           Annual      2      Pending   
 ------------------------------------------------------------------
-Total records : 6
-Total leave days: 23
+Total records : 8
+Total leave days: 26
 ==================================================================

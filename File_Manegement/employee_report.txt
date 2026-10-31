@@ -14,6 +14,9 @@ No  Employee ID     Name           NIC            Phone       Designation Dept  
 7   RT2546          Methsara.A     12365897456    369875641   profesor    ICT   30/10/2026 
 8   -               A.M.awishka    1236549        4569872     Lecturer    ET    30/10/2026 
 9   RT2555          K.L.kamal      123654987      23654789    Senior Lect ICT   31-10-2026 
+10  RT2556          Akila          321456987      23654987    professor   None  31/10/2026 
+11  RT1235          Methsara       6598743621     23654789    Senior Lect ET    31/10/2026 
+12  RT1236          kasun          326223         4           Senior Lect ET    31/10/2026 
 -------------------------------------------------------------------------------------------
-Total records : 9
+Total records : 12
 ===========================================================================================
