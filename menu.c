@@ -103,7 +103,7 @@ char departments[5][100] = {
 };
 int selectedDept = 0;
 
-/* clearScreen() already menu.c eke thiyenawanam meka nawatha liyanna epa */
+
 
 static void readLine(const char *prompt, char *buf, int size) {
     printf("%s", prompt);
@@ -153,7 +153,7 @@ void showAttendanceMenu(void) {
         printf("[0] Back\n\n");
         printf("===============================================\n\n");
         printf("Example (after selecting an option):\n\n");
-        printf("Employee ID : RTxxxx\n\n");
+        printf("Employee ID : NAxxxx or ACxxxx\n\n");
         printf("Date : 2026-10-08\n\n");
         printf("-----------------------------------------------\n");
         readLine("Enter Choice : ", buf, sizeof buf);

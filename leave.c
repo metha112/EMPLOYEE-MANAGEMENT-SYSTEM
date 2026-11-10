@@ -1,31 +1,50 @@
-#include<stdio.h>
-#include<string.h>
-#include<conio.h>
-#include<ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <termios.h>
+#include <unistd.h>
 #include "leave.h"
 #include "menu.h"
 
-/* Password eka type karaddi "*" pennanawa. Backspace support karanawa. */
-static void readPassword(char *buf, int size) {
-    int i = 0;
-    int ch;
+#define EMPLOYEE_FILE "File_Manegement/employee.txt"
+#define LEAVE_FILE    "File_Manegement/leave.txt"
+#define TEMP_FILE     "File_Manegement/temp.txt"
 
-    while ((ch = getch()) != '\r' && ch != '\n') {
-        if (ch == 0 || ch == 224) {      /* arrow / function keys skip */
-            getch();
+static void readPassword(char *buf, int size) {
+    struct termios oldt, newt;
+    int i = 0;
+    char ch;
+
+    fflush(stdout);
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);      
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+    
+    while (read(STDIN_FILENO, &ch, 1) == 1 && ch != '\n' && ch != '\r') {
+        if (ch == 27) {                    
+            char skip;
+            if (read(STDIN_FILENO, &skip, 1) == 1 && skip == '[') {
+                read(STDIN_FILENO, &skip, 1);
+            }
             continue;
         }
-        if (ch == '\b') {                /* backspace */
+        if (ch == 127 || ch == '\b') {     
             if (i > 0) {
                 i--;
                 printf("\b \b");
+                fflush(stdout);
             }
-        } else if (i < size - 1 && isprint(ch)) {
-            buf[i++] = (char)ch;
+        } else if (i < size - 1 && isprint((unsigned char)ch)) {
+            buf[i++] = ch;
             printf("*");
+            fflush(stdout);
         }
     }
     buf[i] = '\0';
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     printf("\n");
 }
 
@@ -52,7 +71,7 @@ void apply_leave(){
         default: printf("Invalid leave type!\n"); return;
     }
 
-    FILE *file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    FILE *file = fopen(EMPLOYEE_FILE, "r");
     if (file == NULL) {
         printf("employee file not found!\n");
         return;
@@ -65,7 +84,7 @@ void apply_leave(){
     int found = 0;
 
     while (fgets(line, sizeof(line), file)) {
-        char *id = strtok(line, "|");          // palaweni field eka (empid)
+        char *id = strtok(line, "|");          
         if (id != NULL && strcmp(id, l1.employeeID) == 0) {
             found = 1;
             break;
@@ -93,7 +112,7 @@ void apply_leave(){
     printf("Leave Days: %d\n", l1.leavedays);
     printf("Status: %s\n", l1.status);
 
-    FILE *leaveFile = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "a");
+    FILE *leaveFile = fopen(LEAVE_FILE, "a");
     if (leaveFile == NULL) {
         printf("Unable to open leave file!\n");
         return;
@@ -104,17 +123,18 @@ void apply_leave(){
 
     printf("Leave application saved successfully!\n");
 
-    int c; while ((c = getchar()) != '\n' && c != EOF);   // buffer eka clear karanna
+    int c; while ((c = getchar()) != '\n' && c != EOF);   
 }
+
 void view_leave(){
 
     clearScreen();
-   
+
     FILE *file;
     struct Leave l1;
     int found = 0;
 
-    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
+    file = fopen(LEAVE_FILE, "r");
 
     if (file == NULL)
     {
@@ -167,7 +187,7 @@ void approve_leave()
     int target = -1;
     char empid[50];
 
-    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
+    file = fopen(LEAVE_FILE, "r");
 
     if (file == NULL)
     {
@@ -196,7 +216,6 @@ void approve_leave()
     printf("Enter Employee ID to approve leave: ");
     scanf("%49s", empid);
 
-
     for (int i = 0; i < count; i++)
     {
         if (strcmp(records[i].employeeID, empid) == 0)
@@ -211,7 +230,6 @@ void approve_leave()
         return;
     }
 
-    
     if (strcmp(records[target].status, "Pending") != 0)
     {
         printf("Last leave status is already %s.\n",
@@ -221,7 +239,7 @@ void approve_leave()
 
     strcpy(records[target].status, "Approved");
 
-    temp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "w");
+    temp = fopen(TEMP_FILE, "w");
 
     if (temp == NULL)
     {
@@ -240,7 +258,7 @@ void approve_leave()
 
     fclose(temp);
 
-    if (rename("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt") != 0)
+    if (rename(TEMP_FILE, LEAVE_FILE) != 0)
     {
         perror("Unable to update leave file");
         return;
@@ -249,11 +267,6 @@ void approve_leave()
     printf("Last pending leave application approved successfully!\n");
 }
 
-
-
-
-
- 
 
 void reject_leave()
 {
@@ -275,7 +288,7 @@ void reject_leave()
     int target = -1;
     char empid[50];
 
-    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt", "r");
+    file = fopen(LEAVE_FILE, "r");
 
     if (file == NULL)
     {
@@ -304,7 +317,6 @@ void reject_leave()
     printf("Enter Employee ID to reject leave: ");
     scanf("%49s", empid);
 
-    
     for (int i = 0; i < count; i++)
     {
         if (strcmp(records[i].employeeID, empid) == 0)
@@ -319,7 +331,6 @@ void reject_leave()
         return;
     }
 
-    
     if (strcmp(records[target].status, "Pending") != 0)
     {
         printf("Last leave status is already %s.\n",
@@ -329,7 +340,7 @@ void reject_leave()
 
     strcpy(records[target].status, "Rejected");
 
-    temp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "w");
+    temp = fopen(TEMP_FILE, "w");
 
     if (temp == NULL)
     {
@@ -348,7 +359,7 @@ void reject_leave()
 
     fclose(temp);
 
-    if (rename("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\temp.txt", "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\leave.txt") != 0)
+    if (rename(TEMP_FILE, LEAVE_FILE) != 0)
     {
         perror("Unable to update leave file");
         return;

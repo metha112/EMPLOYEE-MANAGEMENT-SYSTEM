@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include "attendance_count.h"
 
-#define BASE       "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\"
+#define BASE       "File_Manegement/"
 #define ATT_FILE   BASE "attendance.txt"
 #define COUNT_FILE BASE "attendance_count.txt"
 
@@ -19,7 +20,7 @@ void update_attendance_count(void)
 {
     FILE *in = fopen(ATT_FILE, "r");
     if (in == NULL) {
-        printf("attendance.txt not found!\n");
+        printf("Cannot open %s : %s\n", ATT_FILE, strerror(errno));
         return;
     }
 
@@ -32,7 +33,7 @@ void update_attendance_count(void)
                    id, name, dept, date, status, tm) != 6)
             continue;
 
-        /* employee ID eka list eke thiyenawada balanawa, nathnam add karanawa */
+        
         int idx = -1;
         for (int i = 0; i < total; i++)
             if (strcmp(ids[i], id) == 0) { idx = i; break; }
@@ -46,7 +47,7 @@ void update_attendance_count(void)
 
         if (strcmp(status, "Present") != 0) continue;
 
-        /* same ID + same date dekak count wenne nae */
+        
         int dup = 0;
         for (int i = 0; i < seen; i++)
             if (strcmp(seenId[i], id) == 0 && strcmp(seenDate[i], date) == 0) { dup = 1; break; }
@@ -63,7 +64,7 @@ void update_attendance_count(void)
 
     FILE *out = fopen(COUNT_FILE, "w");
     if (out == NULL) {
-        printf("Cannot write attendance_count.txt!\n");
+        printf("Cannot write %s : %s\n", COUNT_FILE, strerror(errno));
         return;
     }
     for (int i = 0; i < total; i++)

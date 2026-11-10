@@ -8,31 +8,19 @@
 #define MAX_LINE   512
 #define MAX_EMP    500
 
-/* ------------------------------------------------------------------
- * FILE FORMATS (as used in the project)
- *
- *  employee.txt         id|name|NIC|phone|designation|department|joined|id|password|...
- *  attendance.txt       id|name|department|date|status|time
- *  leave.txt            id type days status          (space separated)
- *  salary.txt           id amount                    (space separated)
- *
- *  The password column of employee.txt is never printed.
- * ------------------------------------------------------------------ */
 
-#define FIELD_NAME_LOOKUP  (-2)   /* column value = employee name found by id */
+#define FIELD_NAME_LOOKUP  (-2)   
 
 enum { COL_TEXT, COL_DEPT };
 
 typedef struct {
-    const char *header;   /* column title                             */
-    int         field;    /* field number in the file (0,1,2...)      */
-    int         width;    /* column width on screen / in report file  */
-    int         kind;     /* COL_TEXT or COL_DEPT (short dept name)   */
+    const char *header;   
+    int         field;    
+    int         width;    
+    int         kind;     
 } Column;
 
-/* ---------------- small helpers ---------------- */
 
-/* print to the screen AND to the report file */
 static void emit(FILE *out, const char *fmt, ...)
 {
     va_list ap;
@@ -56,7 +44,7 @@ static void rule(FILE *out, char ch, int len)
     emit(out, "\n");
 }
 
-/* split a line into fields. delim ' ' means "any spaces / tabs" */
+
 static int split_line(char *line, char delim, char *fields[], int max)
 {
     int n = 0;
@@ -88,7 +76,7 @@ static int split_line(char *line, char delim, char *fields[], int max)
     return n;
 }
 
-/* find employee name from employee.txt using the id */
+
 static void lookup_name(const char *id, char *out, size_t size)
 {
     FILE *f = fopen(EMPLOYEE_FILE, "r");
@@ -110,7 +98,6 @@ static void lookup_name(const char *id, char *out, size_t size)
     fclose(f);
 }
 
-/* long department name -> short code */
 static const char *dept_short(const char *d)
 {
     if (strstr(d, "nformation"))  return "ICT";
@@ -123,7 +110,7 @@ static const char *dept_short(const char *d)
 
 static FILE *begin_report(const char *outFile, const char *title, int width)
 {
-    FILE *out = fopen(outFile, "w");    /* if it fails we still show the screen */
+    FILE *out = fopen(outFile, "w");   
 
     emit(out, "\n");
     rule(out, '=', width);
@@ -148,7 +135,7 @@ static void section_title(FILE *out, const char *text, int width)
     rule(out, '-', width);
 }
 
-/* print one table from a data file */
+
 static void print_table(FILE *out, const char *inFile, char delim,
                         const Column cols[], int nCols,
                         int sumCol, const char *sumLabel, int decimals)
@@ -176,7 +163,7 @@ static void print_table(FILE *out, const char *inFile, char delim,
     while (fgets(line, sizeof line, in)) {
         n = split_line(line, delim, fields, MAX_FIELDS);
         if (n == 0)
-            continue;                       /* skip blank lines */
+            continue;                       
 
         count++;
         emit(out, "%-4d", count);
@@ -241,7 +228,7 @@ void employee_report(void)
         { "Designation", 4, 12, COL_TEXT },
         { "Dept",        5,  6, COL_DEPT },
         { "Joined",      6, 11, COL_TEXT }
-    };                                       /* password columns not shown */
+    };                                       
     int width = 91;
     FILE *out = begin_report(EMPLOYEE_REPORT_FILE, "EMPLOYEE REPORT", width);
 

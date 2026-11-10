@@ -3,12 +3,23 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <errno.h>
 #include "attendance.h"
 #include "attendance_count.h"
 #include "menu.h"
 
-#define EMP_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
-#define ATT_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\attendance.txt"
+#ifdef _WIN32
+  #include <direct.h>
+  #define MKDIR(p) _mkdir(p)
+#else
+  #include <sys/stat.h>
+  #include <sys/types.h>
+  #define MKDIR(p) mkdir(p, 0755)
+#endif
+
+#define DATA_DIR "File_Manegement"
+#define EMP_FILE "File_Manegement/employee.txt"
+#define ATT_FILE "File_Manegement/attendance.txt"
 #define MAX_ATT  5000
 
 typedef struct {
@@ -17,7 +28,6 @@ typedef struct {
 
 static AttRec recs[MAX_ATT];
 
-/* ================= helpers ================= */
 
 static void attReadLine(const char *prompt, char *buf, int size) {
     printf("%s", prompt);
@@ -37,17 +47,45 @@ static void attHeader(const char *title) {
     printf("===============================================\n\n");
 }
 
+static void attEnsureDir(void) {
+    MKDIR(DATA_DIR);
+}
+
+static void attEnsureFile(const char *path) {
+    attEnsureDir();
+    FILE *fp = fopen(path, "a");
+    if (fp) fclose(fp);
+}
+
+static char *attTrim(char *s) {
+    while (*s && isspace((unsigned char)*s)) s++;
+    char *e = s + strlen(s);
+    while (e > s && isspace((unsigned char)e[-1])) *--e = '\0';
+    return s;
+}
+
 static int attSplit(char *line, char *f[], int max) {
     int n = 0;
     f[n++] = line;
     for (char *p = line; *p && n < max; p++)
         if (*p == '|') { *p = '\0'; f[n++] = p + 1; }
+    for (int i = 0; i < n; i++) f[i] = attTrim(f[i]);
     return n;
+}
+
+
+static int attDeptMatch(const char *fileDept, const char *fullDept) {
+    size_t len = strlen(fileDept);
+    if (len == 0) return 0;
+    return strncmp(fileDept, fullDept, len) == 0;
 }
 
 static int attFindEmployee(const char *id, char *name, int nsz, char *dept, int dsz) {
     FILE *fp = fopen(EMP_FILE, "r");
-    if (!fp) return 0;
+    if (!fp) {
+        printf("\nCannot open %s : %s\n", EMP_FILE, strerror(errno));
+        return 0;
+    }
     char line[600];
     while (fgets(line, sizeof line, fp)) {
         line[strcspn(line, "\r\n")] = '\0';
@@ -87,7 +125,6 @@ static void attNow(char *date, char *tm) {
     strftime(tm, 10, "%H:%M", l);
 }
 
-/* select karapu department eke records witharak load karanawa */
 static int attLoad(void) {
     FILE *fp = fopen(ATT_FILE, "r");
     if (!fp) return 0;
@@ -98,7 +135,7 @@ static int attLoad(void) {
         char *f[6];
         if (attSplit(line, f, 6) < 6) continue;
         /* id|name|dept|date|status|time */
-        if (strcmp(f[2], departments[selectedDept - 1]) != 0) continue;
+        if (!attDeptMatch(f[2], departments[selectedDept - 1])) continue;
         snprintf(recs[n].id,     sizeof recs[n].id,     "%s", f[0]);
         snprintf(recs[n].name,   sizeof recs[n].name,   "%s", f[1]);
         snprintf(recs[n].date,   sizeof recs[n].date,   "%s", f[3]);
@@ -126,7 +163,6 @@ static void attPrintRec(const AttRec *r) {
     printf("%-16s %-24s %-12s %-10s %s\n", r->id, r->name, r->date, r->status, r->time);
 }
 
-/* ================= ID helpers (number only -> RT + number) ================= */
 
 static int allDigits(const char *s) {
     if (*s == '\0') return 0;
@@ -139,17 +175,15 @@ static void normalizeId(char *id) {
     for (int i = 0; id[i]; i++) id[i] = (char)toupper((unsigned char)id[i]);
 }
 
-/* Full ID ("RT2546") hari, number witharak ("2546") hari hoyanawa.
-   Hambunoth id[] eka full ID ekata wenas karanawa. */
 static int resolveEmployee(char *id, int idSize,
                            char *name, int nameSize,
                            char *dept, int deptSize) {
+    char *t = attTrim(id);
+    if (t != id) memmove(id, t, strlen(t) + 1);
     normalizeId(id);
 
-    /* 1. type karapu widihatama (001, 200546, TG/IT/... walata) */
     if (attFindEmployee(id, name, nameSize, dept, deptSize)) return 1;
 
-    /* 2. digits witharak nam RT + number */
     if (allDigits(id)) {
         char alt[50];
         snprintf(alt, sizeof alt, "RT%s", id);
@@ -161,17 +195,15 @@ static int resolveEmployee(char *id, int idSize,
     return 0;
 }
 
-/* ================= Employee type (ID prefix eken) ================= */
 
 typedef struct {
     const char *prefix;
     const char *type;
 } IdType;
 
-/* Lamba prefix palaweni thiyanna (RTA kiyana eka RT walata kalin) */
 static const IdType idTypes[] = {
-    {"TG/", "Academic Staff"},
-    {"RT",  "Non-Academic Staff"},
+    {"AC", "Academic Staff"},
+    {"NA",  "Non-Academic Staff"},
     {NULL,  NULL}
 };
 
@@ -180,7 +212,7 @@ static const char *getEmployeeType(const char *id) {
         if (strncmp(id, idTypes[i].prefix, strlen(idTypes[i].prefix)) == 0)
             return idTypes[i].type;
     }
-    return "Other";   /* 001, 200546 wage prefix nathi ewata */
+    return "Other";
 }
 
 /* ================= 1. Mark Attendance ================= */
@@ -188,11 +220,12 @@ static const char *getEmployeeType(const char *id) {
 void markAttendance(void) {
     char id[50], name[100], dept[120], date[15], tm[10], today[15], buf[20];
     const char *statuses[] = {"", "Present", "Absent", "Half Day", "Late"};
+    const char *fullDept = departments[selectedDept - 1];
 
     clearScreen();
     attHeader("MARK ATTENDANCE");
 
-    attReadLine("Employee ID (e.g. 2546 or RT2546) : ", id, sizeof id);
+    attReadLine("Employee ID (e.g. 2546 or NA2546 or AC2546) : ", id, sizeof id);
     if (id[0] == '\0') { printf("\nEmployee ID empty!"); attPause(); return; }
 
     if (!resolveEmployee(id, sizeof id, name, sizeof name, dept, sizeof dept)) {
@@ -200,7 +233,7 @@ void markAttendance(void) {
         attPause();
         return;
     }
-    if (strcmp(dept, departments[selectedDept - 1]) != 0) {
+    if (!attDeptMatch(dept, fullDept)) {
         printf("\nThis employee belongs to:\n%s\n", dept);
         attPause();
         return;
@@ -228,9 +261,15 @@ void markAttendance(void) {
 
     const char *timeStr = (s == 2) ? "-" : tm;
 
+    attEnsureDir();
     FILE *fp = fopen(ATT_FILE, "a");
-    if (!fp) { printf("\nCannot open %s!", ATT_FILE); attPause(); return; }
-    fprintf(fp, "%s|%s|%s|%s|%s|%s\n", id, name, dept, date, statuses[s], timeStr);
+    if (!fp) {
+        printf("\nCannot open %s : %s", ATT_FILE, strerror(errno));
+        attPause();
+        return;
+    }
+    
+    fprintf(fp, "%s|%s|%s|%s|%s|%s\n", id, name, fullDept, date, statuses[s], timeStr);
     fclose(fp);
 
     update_attendance_count();
@@ -245,6 +284,7 @@ void markAttendance(void) {
 void viewAttendance(void) {
     clearScreen();
     attHeader("VIEW ATTENDANCE");
+    attEnsureFile(ATT_FILE);
     int n = attLoad();
     if (n == 0) { printf("No attendance records.\n"); attPause(); return; }
     attPrintTableHead();
@@ -263,6 +303,12 @@ void searchAttendance(void) {
     attReadLine("Employee ID (Enter to skip) : ", id, sizeof id);
     attReadLine("Date YYYY-MM-DD (Enter to skip) : ", date, sizeof date);
 
+    if (id[0] != '\0') {
+        char *t = attTrim(id);
+        if (t != id) memmove(id, t, strlen(t) + 1);
+        normalizeId(id);
+    }
+
     if (id[0] == '\0' && date[0] == '\0') {
         printf("\nEnter at least one search value!");
         attPause();
@@ -277,7 +323,11 @@ void searchAttendance(void) {
     int n = attLoad(), found = 0;
     printf("\n");
     for (int i = 0; i < n; i++) {
-        if (id[0]   && strcmp(recs[i].id, id)     != 0) continue;
+        if (id[0] && strcmp(recs[i].id, id) != 0) {
+            char alt[60];
+            snprintf(alt, sizeof alt, "RT%s", id);
+            if (!(allDigits(id) && strcmp(recs[i].id, alt) == 0)) continue;
+        }
         if (date[0] && strcmp(recs[i].date, date) != 0) continue;
         if (!found) attPrintTableHead();
         attPrintRec(&recs[i]);
@@ -301,7 +351,11 @@ void monthlyReport(void) {
     int n = attLoad();
 
     FILE *fp = fopen(EMP_FILE, "r");
-    if (!fp) { printf("\nCannot open %s!", EMP_FILE); attPause(); return; }
+    if (!fp) {
+        printf("\nCannot open %s : %s", EMP_FILE, strerror(errno));
+        attPause();
+        return;
+    }
 
     printf("\nReport for %s\n\n", month);
     printf("%-16s %-24s %8s %7s %9s %5s\n", "Employee ID", "Name", "Present", "Absent", "Half Day", "Late");
@@ -311,9 +365,10 @@ void monthlyReport(void) {
     int count = 0;
     while (fgets(line, sizeof line, fp)) {
         line[strcspn(line, "\r\n")] = '\0';
+        
         char *f[9];
         if (attSplit(line, f, 9) < 6) continue;
-        if (strcmp(f[5], departments[selectedDept - 1]) != 0) continue;
+        if (!attDeptMatch(f[5], departments[selectedDept - 1])) continue;
 
         int p = 0, a = 0, h = 0, l = 0;
         for (int i = 0; i < n; i++) {

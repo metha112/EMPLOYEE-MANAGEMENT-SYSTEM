@@ -10,7 +10,7 @@ struct employee
     char emp_name[50];
     char nic[15];
     char phone[15];
-    char dep[30];
+    char dep[100];
     char depr[60];
     char join_date[15];
     char username[20];
@@ -40,6 +40,11 @@ void addEmployee()
         printf("\t\t    REGISTER EMPLOYEE");
         printf("\n\n================================================================\n");
         printf("\n");
+        printf("EX: ACxxxx or NAxxxx");
+        printf("\n");
+        printf("AC - Academic\nNA - Non-Academic");
+        printf("\n");
+        printf("---------------------------------------------------------------------\n");
         printf("Enter the Employee ID: ");
         fgets(emp.emp_id, sizeof(emp.emp_id), stdin);
         emp.emp_id[strcspn(emp.emp_id, "\n")] = '\0';
@@ -190,7 +195,7 @@ void addEmployee()
     fgets(emp.password, sizeof(emp.password), stdin);
     emp.password[strcspn(emp.password, "\n")] = '\0';
 
-    FILE *fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "a");
+    FILE *fp = fopen("File_Manegement/employee.txt", "a");
     if (fp == NULL)
     {
         printf("Error opening file! Check the folder path.\n");
@@ -205,7 +210,7 @@ void addEmployee()
     printf("Employee added successfully.\n");
 }
 
-#define EMP_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
+#define EMP_FILE "File_Manegement/employee.txt"
 
 int countLines(void) {
     FILE *fp = fopen(EMP_FILE, "r");
@@ -232,7 +237,7 @@ void viewEmployees() {
     FILE *fp;
     char line[200];
 
-    fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    fp = fopen("File_Manegement/employee.txt", "r");
     if (fp == NULL) {
         printf("Error opening file! Check the folder path.\n");
         return;
@@ -310,7 +315,7 @@ void searchEmployee(){
         printf("|   %-18s %-20s %-18s %-35s %-20s|\n",
                "ID", "Name", "Phone_NO", "Designation", "Department");
 
-        fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+        fp = fopen("File_Manegement/employee.txt", "r");
         if (fp == NULL) {
             printf("Error opening file! Check the folder path.\n");
             return;
@@ -367,7 +372,7 @@ static int splitFields(char *line, char *f[], int max){
 
 void updateEmployee(){
     clearScreen();
-    const char *PATH = "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt";
+    const char *PATH = "File_Manegement/employee.txt";
 
     int count = countLines();
     if (count == 0)
@@ -411,7 +416,7 @@ void updateEmployee(){
             int n = splitFields(line, f, 10);
             if (n < 6) continue;
 
-            // REAL file order:
+            // file order:
             // id | name | nic | phone | designation | department | join_date | username | password
             snprintf(emp[i].emp_id,      sizeof(emp[i].emp_id),      "%s", f[0]);
             snprintf(emp[i].emp_name,    sizeof(emp[i].emp_name),    "%s", f[1]);
@@ -487,7 +492,7 @@ void updateEmployee(){
             }
 
             while (j < i){
-                // same order as the file: password is the 9th field, last one
+                
                 fprintf(fp, "%s|%s|%s|%s|%s|%s|%s|%s|%s\n",
                         emp[j].emp_id, emp[j].emp_name, emp[j].nic, emp[j].phone,
                         emp[j].designation, emp[j].dep,

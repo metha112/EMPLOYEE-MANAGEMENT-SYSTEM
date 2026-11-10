@@ -32,7 +32,7 @@ void salary()
         printf("\t\tSALARY MANAGEMENT\n\n");
         printf("===============================================\n\n");
 
-    file = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt", "r");
+    file = fopen("File_Manegement/employee.txt", "r");
 
     if (file == NULL)
     {
@@ -43,7 +43,7 @@ void salary()
     printf("Enter the employee ID: ");
     scanf("%49s", l1.sch_emp_id);
 
-    fp = fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\attendance_count.txt", "r");
+    fp = fopen("File_Manegement/attendance_count.txt", "r");
 
     if (fp == NULL)
     {
@@ -195,7 +195,7 @@ void salary()
 
                 FILE *f;
 
-                f=fopen("D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\salary.txt","a");
+                f=fopen("File_Manegement/salary.txt","a");
                 if (f!=NULL)
                 {
                     fprintf(f,"%s %.2f\n",l1.sch_emp_id,salary);

@@ -18,7 +18,7 @@
         return (unsigned char)c;
     }
 
-    #define EMPLOYEE_FILE "D:\\C program\\network update\\EMPLOYEE-MANAGEMENT-SYSTEM\\EMS-Final\\EMPLOYEE-MANAGEMENT-SYSTEM\\File_Manegement\\employee.txt"
+    #define EMPLOYEE_FILE "File_Manegement/employee.txt"
 #else
     #include <termios.h>
     #include <unistd.h>
@@ -44,7 +44,7 @@ int main(){
 }
 
 
-/*main login and register page*/
+//main login and register page
 
 void login(){
     int choice;
@@ -99,13 +99,13 @@ int checkLogin(const char *username, const char *password){
     while(fgets(line, sizeof(line), fp)){
         line[strcspn(line, "\r\n")] = '\0';   
 
-        /* last field = password */
+      
         char *passPtr = strrchr(line, '|');
         if(passPtr == NULL) continue;
         *passPtr = '\0';
         passPtr++;
 
-        /* second last field = username */
+        
         char *userPtr = strrchr(line, '|');
         userPtr = (userPtr == NULL) ? line : userPtr + 1;
 
@@ -154,7 +154,7 @@ void userPassword(){
                     printf("\b \b");
                     fflush(stdout);
                 }
-            } else if(i < 19){          /* prevent overflow */
+            } else if(i < 19){          
                 password[i++] = (char)ch;
                 printf("*");
                 fflush(stdout);
