@@ -1,8 +1,18 @@
 #ifndef LEAVE_H
 #define LEAVE_H
-void showLeave();
-void applyLeave ();
-void viewLeave ();
-void approveLeave ();
-void rejectLeave ();
+
+struct Leave
+{
+    
+    char employeeID[50];
+    char leaveType[20];
+    int leavedays;
+    char status[20];
+};
+
+void apply_leave();
+void view_leave();
+void approve_leave();
+void reject_leave();
+void clearScreen();
 #endif

@@ -1,8 +1,18 @@
 #ifndef MENU_H
 #define MENU_H
-void clearScreen();
+
+extern char departments[5][100];
+extern int  selectedDept;
+void login();
 void showMainMenu();
 void showEmployeeMenu();
-void showDepartmentMenuForAttendance();
-void showAttendanceMenu();
+void userPassword();
+void showLeave();
+int  selectDepartment(void);
+void showDepartmentMenuForAttendance(void);
+void showAttendanceMenu(void);
+void clearScreen();
+void salary();
+void reportsMenu();
+
 #endif
